@@ -1,0 +1,72 @@
+.box-container{
+    height: 80%;
+    width: 30%;
+    align-self: center;
+    background-color: rgb(240, 240, 240);
+    border-radius:3ch;
+  
+  }
+  .text-box-login{
+    padding-top: 10%;
+    align-items: center;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .image-view-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    padding-top:10%;
+   }
+
+   .image-shape{
+    height:auto;
+    width: 40%;
+   }
+
+   .label-input-container{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-top: 5%;
+   }
+
+  .input-style-class{
+    width: 100%;
+    height: 4ch;
+    border-radius:1ch;
+    background-color:#d7d9da;
+    border-width: 0;
+  }
+.label-style-class{
+  font-size:small;
+  font-weight: 500;
+}
+.button-div-container{
+  margin-top:3%;
+  width: 80%;
+  display:flex;
+  justify-content: center;
+}
+
+/* style={{marginTop:'8%',width:'80%',display:'flex',justifyContent:'center'}} */
+  /* style={{fontSize:10,fontWeight:'500'}} */
+   @media only screen and (max-width:800px) {
+    /* For tablets: */
+    .box-container{
+      background-color: #FFFF;
+      width: 40%;
+      height: 65%;
+    }
+  }
+  @media only screen and (max-width:500px) {
+    /* For mobile phones: */
+   .box-container{
+    background-color: #FFFF;
+    width: 60%;
+    height: 62%;
+   }
+  }

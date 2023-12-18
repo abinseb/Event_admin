@@ -1,0 +1,28 @@
+.form-main-container{
+    height: 100vh;
+    display: flex;
+    background-color: #E8F5FA;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+
+}
+
+.button-custom-class{
+    width: 10%;
+   
+}
+
+@media only screen and (max-width:800px) {
+    .button-custom-class{
+        background-color: rgb(56, 218, 236) !important;
+        width: 20%;
+    }
+}
+
+@media only screen and (max-width:500px) {
+    .button-custom-class{
+        background-color: rgb(56, 218, 236) !important;
+        width: 30%;
+    }
+}
