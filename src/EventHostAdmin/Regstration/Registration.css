@@ -1,0 +1,23 @@
+.registration-container{
+    background-color:rgb(210, 227, 233);
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.form-container{
+    
+    display: flex;
+    align-self: center;
+    width: 90%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-content: flex-start;
+}
+.grid-form-container{
+    margin-left: 10%;
+    margin-right: 10%;
+} 
+.button-custom-class{
+    margin-left: 3%;
+}

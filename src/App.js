@@ -4,6 +4,9 @@ import HeaderUi from './container/Header/Header';
 import LandingPage from './LandingPage/LandingPage';
 import Login from './container/Login/Login';
 import SignIn from './container/SignIn/SignIn';
+import PersistentDrawerLeft from './container/SideDrawer/SideDrawer';
+import EventRegistration from './EventHostAdmin/Regstration/EventRegistration';
+import CreateEvent from './EventHostAdmin/Regstration/CreateEvent';
 
 function App() {
   return (
@@ -16,7 +19,10 @@ function App() {
         <Route path='/' element={<LandingPage/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/signin' element={<SignIn/>} />
-      </Routes>
+        <Route path='/drawer' element={<PersistentDrawerLeft/>} />
+        <Route path='/eventRegistration' element={<EventRegistration/>} />
+        <Route path='/createevent' element={<CreateEvent/>} />
+      </Routes> 
       </BrowserRouter>
   );
 }
