@@ -1,19 +1,24 @@
 import React from 'react'
-import { Card } from 'react-bootstrap'
-const MyCard = () => {
+import { Avatar, Card, CardContent,Typography, CardMedia } from '@mui/material'
+import './component.css'
+import { CardHeader } from 'react-bootstrap'
+
+const MyCard = ({imgname,title,titlecolor,count,description,color}) => {
   return (
-       <Card style={{ width: '18rem' }}>
-        <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Card.Link href="#">Card Link</Card.Link>
-          <Card.Link href="#">Another Link</Card.Link>
-        </Card.Body>
-    </Card>
+    <Card className='card-custom-style'>
+    <CardHeader className='custom-card-header'>
+        <Avatar >
+            <img style={{height:'100%'}} src={require(`../image/${imgname}`)} />
+        </Avatar>
+        <Typography className='title-custom-style' variant='h6'  color={titlecolor}>{title}</Typography>
+      </CardHeader>
+    <CardContent className='card-content-custom'>
+    <Typography className='count-number'variant='h4'  color={color} gutterBottom>
+      {count}
+    </Typography>
+    <Typography style={{fontSize:'80%',fontWeight:'bolder'}}>{description}</Typography>
+    </CardContent>
+</Card>
   )
 }
 

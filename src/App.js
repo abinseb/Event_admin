@@ -7,6 +7,7 @@ import SignIn from './container/SignIn/SignIn';
 import PersistentDrawerLeft from './container/SideDrawer/SideDrawer';
 import EventRegistration from './EventHostAdmin/Regstration/EventRegistration';
 import CreateEvent from './EventHostAdmin/Regstration/CreateEvent';
+import Dashboard from './EventHostAdmin/Dashboard/Dashboard';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/drawer' element={<PersistentDrawerLeft/>} />
         <Route path='/eventRegistration' element={<EventRegistration/>} />
         <Route path='/createevent' element={<CreateEvent/>} />
+        <Route path='/dashboard' element={<Dashboard/>} />
       </Routes> 
       </BrowserRouter>
   );

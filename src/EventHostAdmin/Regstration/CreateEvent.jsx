@@ -7,104 +7,159 @@ const CreateEvent = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [workshops, setWorkshops] = useState([]);
   const [workshopDetails, setWorkshopDetails] = useState({
-    title: '',
-    date: '',
-    venue: '',
+    workshopname:'',
+    workshopdescription:'',
+    venue:'',
+    workshopdate:'',
+    workshopvenue:'',
+    workshopicon:'',
+
+
+
   });
 
   const handleAddWorkshop = () => {
     setWorkshops([...workshops, workshopDetails]);
-    setWorkshopDetails({ title: '', date: '', venue: '' });
+    setWorkshopDetails({  workshopname:'',
+                          workshopdescription:'',
+                          venue:'',
+                          workshopdate:'',
+                          workshopvenue:'',
+                          workshopicon:''
+                        });
     setOpenDialog(false);
   };
 
   return (
     <div className='registration-container'>
+      <div style={{width:'70%'}}>
 
+     
     
     <Grid container spacing={1} className='grid-form-container'>
-      {/* Event Name */}
-      <Grid item xs={12} md={6}>
-        <label htmlFor="event-name">Event Name</label>
-        <TextField
-          id="event-name"
-          label="Event Name"
-          variant="outlined"
-          fullWidth
-        />
-      </Grid>
+        <Grid item xs={12} md={6}>
+          <div className='label-textbox-container'>
+            <label className='label-custom'>Event Name</label>
+            <TextField
+              className='text-field-container'
+              id="event-name"
+              label="Event Name"
+              variant="outlined"
+              size="small" // Adjust the size as needed
+            />
+          </div>
+        </Grid>
 
-      {/* Description */}
-      <Grid item xs={12} md={6}>
-        <label htmlFor="event-description">Description</label>
-        <TextField
-          id="event-description"
-          label="Description"
-          variant="outlined"
-          multiline
-          rows={4}
-          fullWidth
-        />
-      </Grid>
+        <Grid item xs={12} md={6}>
+          <div className='label-textbox-container'>
+            <label className='label-custom'>Description</label>
+            <TextField
+              className='text-field-container'
+              id="event-name"
+              label="Event Name"
+              variant="outlined"
+              multiline
+              rows={3}
+              size="small" // Adjust the size as needed
+            />
+          </div>
+        </Grid>
 
-      <Grid item xs={12} md={6}>
-        <label>Venue</label>
-        <TextField 
-          label="Venue"
-          variant='outlined'
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <label>Date</label>
-        <TextField 
-          label="date"
-          variant='outlined'
-          fullWidth
-          type='date'
-        />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <label>Icon</label>
-        <TextField 
-         
-          variant='outlined'
-          fullWidth
-          type='file'
-        />
-      </Grid>
+        <Grid item xs={12} md={6}>
+          <div className='label-textbox-container'>
+            <label className='label-custom'>Date</label>
+            <TextField
+              className='text-field-container'
+              id="eventdate"
+              type='date'
+             
+              variant="outlined"
+              size="small" // Adjust the size as needed
+            />
+          </div>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <div className='label-textbox-container'>
+            <label className='label-custom'>Venue</label>
+            <TextField
+              className='text-field-container'
+              id="eventdate"
+              label="Venue"
+              variant="outlined"
+              size="small" // Adjust the size as needed
+            />
+          </div>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <div className='label-textbox-container'>
+            <label className='label-custom'>Upload File</label>
+            <TextField
+              className='text-field-container'
+              id="event-name"
+              variant="outlined"
+              size="small" // Adjust the size as needed
+              type='file'
+            />
+          </div>
+        </Grid>
+
       <Grid item xs={12} md={6} >
-        <label>Add Workshops</label>
-          <Button variant='contained'  onClick={() => setOpenDialog(true)} className='button-custom-class' style={{marginLeft:'10%',width:'30%'}}>Workshop </Button>
+      <label className='label-custom'>Add Workshop</label>
+          <Button variant='contained'  onClick={() => setOpenDialog(true)} size='small'  className='button-custom-class'>add </Button>
       </Grid>
     </Grid>
 
 
-    <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+    <Dialog open={openDialog} onClose={() => setOpenDialog(false)}  >
         <DialogTitle>Add Workshop</DialogTitle>
         <DialogContent>
+          <div style={{margin:'2%', width:'70%',alignSelf:'center'}}>
           <TextField
-            label="Title"
+            style={{marginBottom:'5%'}}
+            label="Workshop Name"
             variant="outlined"
             fullWidth
-            value={workshopDetails.title}
-            onChange={(e) => setWorkshopDetails({ ...workshopDetails, title: e.target.value })}
+            value={workshopDetails.workshopname}
+            onChange={(e) => setWorkshopDetails({ ...workshopDetails, workshopname: e.target.value })}
           />
           <TextField
-            label="Date"
+             style={{marginBottom:'5%'}}
+            label="Description"
             variant="outlined"
             fullWidth
-            type='date'
-            value={workshopDetails.date}
-            onChange={(e) => setWorkshopDetails({ ...workshopDetails, date: e.target.value })}
+            value={workshopDetails.workshopdescription}
+            onChange={(e) => setWorkshopDetails({ ...workshopDetails, workshopdescription: e.target.value })}
           />
           <TextField
+           style={{marginBottom:'5%'}}
             label="Venue"
             variant="outlined"
             fullWidth
-            value={workshopDetails.venue}
-            onChange={(e) => setWorkshopDetails({ ...workshopDetails, venue: e.target.value })}
+            value={workshopDetails.workshopvenue}
+            onChange={(e) => setWorkshopDetails({ ...workshopDetails, workshopvenue: e.target.value })}
           />
+          <TextField
+           style={{marginBottom:'5%'}}
+           label='Date'
+          variant='outlined'
+          value={workshopDetails.workshopdate}
+          fullWidth
+          type='date'
+          onChange={(e)=> setWorkshopDetails({ ...workshopDetails,workshopdate:e.target.value})}
+          />
+          <label>Upload Icon</label>
+          <TextField 
+           style={{marginBottom:'5%'}}
+          variant='outlined'
+          fullWidth
+          value={workshopDetails.workshopicon}
+          type='file'
+          onChange={(e)=> setWorkshopDetails({...workshopDetails , workshopicon:e.target.value})}
+
+          />
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
@@ -114,18 +169,29 @@ const CreateEvent = () => {
         </DialogActions>
       </Dialog>
 
-      <div>
-        <h3>Added Workshops:</h3>
-        <ul>
+    
+     <div className='workshoplist-container'>
+      
+        <Grid container spacing={2} style={{width:'100%'}}>
           {workshops.map((workshop, index) => (
-            <li key={index}>
-              {`Title: ${workshop.title}, Date: ${workshop.date}, Venue: ${workshop.venue}`}
-            </li>
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <div className='workshop-item'>
+                <ul>
+                  <li>{`Name: ${workshop.workshopname}`}</li>
+                  <li>{`Description: ${workshop.workshopdescription}`}</li>
+                  <li>
+                    <Button color='error'>Remove</Button>
+                  </li>
+                </ul>
+              </div>
+            </Grid>
           ))}
-        </ul>
+        </Grid>
       </div>
+     <Button > </Button>
+      
     </div>
-
+    </div>
   );
 }
 

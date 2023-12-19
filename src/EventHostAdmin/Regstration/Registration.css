@@ -4,6 +4,8 @@
     justify-content: center;
     align-items: center;
     display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 .form-container{
     
@@ -13,11 +15,46 @@
     flex-direction: column;
     justify-content: flex-end;
     align-content: flex-start;
+
 }
 .grid-form-container{
-    margin-left: 10%;
-    margin-right: 10%;
+    padding-left: 10%;
+    margin-right: 5%;
+    
 } 
 .button-custom-class{
-    margin-left: 3%;
+    margin-left: 30%;
+    width: 2%
+}
+
+
+.workshoplist-container{
+  
+    display: flex;
+    padding-top: 3%;
+}
+
+.text-field-container{
+   
+}
+
+.label-textbox-container{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.label-custom{
+    width: 30%;
+  margin-bottom: 4px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.text-field-container{
+    width: 60%;
+    border-width:1;
+
+   
 }
