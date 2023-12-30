@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState,useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,24 +12,64 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-
+import Dashboard from '../../EventHostAdmin/Dashboard/Dashboard';
+import CreateEvent from '../../EventHostAdmin/Regstration/CreateEvent';
+import EventRegistration from '../../EventHostAdmin/Regstration/EventRegistration';
+import { Route, Router,Link, Routes, BrowserRouter, useNavigation, useNavigate, useSearchParams } from 'react-router-dom';
+import PublishEvent from '../../EventHostAdmin/PublishEvent/PublishEvent';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import WorkshopView from '../../EventHostAdmin/Workshop/WorkshopView';
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft() {
-  const[drawerOpen,setDraweropen] = React.useState(false);
+
+  const nav = useNavigate();
+  const[drawerOpen,setDraweropen] = useState(false);
+  const [page,setPage] =React.useState(null);
+
+  const [searchParams] = useSearchParams();
+  const pageType = searchParams.get('page');
+
+  useEffect(()=>{
+   switch(pageType){
+    case'dashboard':
+      setPage(<Dashboard/>);
+      break;
+    case 'eventRegistration':
+      setPage(<CreateEvent/>)
+      break;
+    case 'publish':
+      setPage(<PublishEvent/>)
+      break;
+      case 'workshop':
+        setPage(<WorkshopView/>)
+        break;
+    default:
+      setPage(<PublishEvent/>)
+   }
+  },[pageType])
+
+
 
   const handleDrawerToggle=()=>{
     setDraweropen(!drawerOpen);
     console.log("drawersatate",drawerOpen);
   }
 
- 
+ const handleNavigationToScreen=(pageName)=>{
+    nav(`/drawer?page=${pageName}`)
+ }
+
 
   return (
+   
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar
@@ -36,6 +77,7 @@ export default function PermanentDrawerLeft() {
         sx={{
           width: '100%',
           zIndex: (theme) => theme.zIndex.drawer + 1, // Make the AppBar appear above the Drawer
+         
         }}
       >
         <Toolbar>
@@ -73,28 +115,46 @@ export default function PermanentDrawerLeft() {
           </List>
           <Divider />
           <List style={{ position: 'relative', height: '100%' }}>
-              <ListItem disablePadding>
+              <ListItem disablePadding onClick={()=>{handleNavigationToScreen('eventRegistration')}}>
                 <ListItemButton>
                   <ListItemIcon>
-                    <InboxIcon />
+                    <AppRegistrationIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Event Registration" />
+                  <ListItemText primary="EventRegistration" />
                 </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding onClick={()=>{handleNavigationToScreen('publish')}}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <PublishedWithChangesIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Publish" />
+                  </ListItemButton>
               </ListItem>
 
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <MailIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Dashboard" />
-                </ListItemButton>
+              <ListItem disablePadding onClick={()=>{handleNavigationToScreen('workshop')}}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <CorporateFareIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Workshop" />
+                  </ListItemButton>
               </ListItem>
-                  
+
+                <ListItem disablePadding onClick={()=>{handleNavigationToScreen('dashboard')}}>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Dashboard" />
+                  </ListItemButton>
+              </ListItem>
+
+             
               <ListItem disablePadding style={{position:'absolute',bottom:0}}>
                 <ListItemButton>
                   <ListItemIcon>
-                    <MailIcon />
+                    <LogoutIcon />
                   </ListItemIcon>
                   <ListItemText primary="LogOut" />
                 </ListItemButton>
@@ -102,6 +162,13 @@ export default function PermanentDrawerLeft() {
             </List>
         </Drawer>
       </div>
+     <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+      >
+        {page}
+      </Box> 
     </Box>
+   
   );
 }

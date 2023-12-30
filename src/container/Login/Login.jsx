@@ -1,8 +1,13 @@
 import React from 'react'
 import './login.css'
 import { Button } from 'react-bootstrap'
-
+import { useNavigate } from 'react-router-dom'
 const Login = () => {
+const navigate = useNavigate();
+  const handle_Login=()=>{
+      console.log("Login login");
+      navigate('/drawer')
+  }
  
   return (
     <div className='background-container' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -26,7 +31,7 @@ const Login = () => {
           <label style={{fontSize:10,alignSelf:'end',color:'#2739DD',fontWeight:'500',paddingTop:'1%'}}>forgotPassord</label>
           </div>
           <div className='button-div-container'>
-            <Button style={{width:'80%',height:30}}>Login</Button>
+            <Button style={{width:'80%',height:30}} onClick={handle_Login}>Login</Button>
           </div>
         </div>
       </div>

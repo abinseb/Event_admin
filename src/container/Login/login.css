@@ -1,6 +1,6 @@
 .box-container{
-    height: 80%;
-    width: 30%;
+    height: 70%;
+    width: 25%;
     align-self: center;
     background-color: rgb(240, 240, 240);
     border-radius:3ch;
@@ -67,6 +67,6 @@
    .box-container{
     background-color: #FFFF;
     width: 60%;
-    height: 62%;
+    height: 52%;
    }
   }

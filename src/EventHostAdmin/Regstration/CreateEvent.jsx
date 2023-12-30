@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Grid, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Grid, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
 import './Registration.css';
-
+import { Event_registration_Function } from '../../API /Registration';
 const CreateEvent = () => {
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -18,6 +18,15 @@ const CreateEvent = () => {
 
   });
 
+  const [eventDetails , setEventDetails] = useState({
+    eventname:'',
+    eventdescription:'',
+    eventdate:'',
+    eventvenue:'',
+    eventimage:null
+});
+
+
   const handleAddWorkshop = () => {
     setWorkshops([...workshops, workshopDetails]);
     setWorkshopDetails({  workshopname:'',
@@ -29,13 +38,42 @@ const CreateEvent = () => {
                         });
     setOpenDialog(false);
   };
+const handle_removeWorkshops=(index)=>{
+  const updatedWorkshops = [...workshops];
+  updatedWorkshops.splice(index,1);
+  setWorkshops(updatedWorkshops);
+}
 
+const handleEventDetailsChange=(e)=>{
+  setEventDetails({...eventDetails,[e.target.name]:e.target.value});
+}
+
+const handleEventFileChange=(e)=>{
+  const file = e.target.file[0];
+  setEventDetails({...eventDetails,eventimage:file});
+}
+
+const handle_EventRegistration=async()=>{
+      try{
+        const registrationData ={
+          eventDetails:{...eventDetails},
+          workshops:[...workshops],
+        };
+        console.log("Dataa",registrationData);
+      const RegistrationResponse = await Event_registration_Function(registrationData);
+        console.log("RegistrationData",RegistrationResponse.data.success);
+        if(RegistrationResponse.data.success === true){
+          alert("Event Created Successfully");
+        }
+      }
+      catch(error){
+        console.log("Error in eventregistration", error);
+      }
+}
   return (
     <div className='registration-container'>
-      <div style={{width:'70%'}}>
-
-     
-    
+      <div style={{width:'70%'}}>  
+      <Typography variant='h5' className='tittle-custom-style'>Event Registration</Typography>  
     <Grid container spacing={1} className='grid-form-container'>
         <Grid item xs={12} md={6}>
           <div className='label-textbox-container'>
@@ -46,6 +84,9 @@ const CreateEvent = () => {
               label="Event Name"
               variant="outlined"
               size="small" // Adjust the size as needed
+              name='eventname'
+              value={eventDetails.eventname}
+              onChange={handleEventDetailsChange}
             />
           </div>
         </Grid>
@@ -55,12 +96,15 @@ const CreateEvent = () => {
             <label className='label-custom'>Description</label>
             <TextField
               className='text-field-container'
-              id="event-name"
               label="Event Name"
               variant="outlined"
               multiline
               rows={3}
               size="small" // Adjust the size as needed
+              name='eventdescription'
+              value={eventDetails.eventdescription}
+              onChange={handleEventDetailsChange}
+
             />
           </div>
         </Grid>
@@ -72,9 +116,11 @@ const CreateEvent = () => {
               className='text-field-container'
               id="eventdate"
               type='date'
-             
               variant="outlined"
               size="small" // Adjust the size as needed
+              name='eventdate'
+              value={eventDetails.eventdate}
+              onChange={handleEventDetailsChange}
             />
           </div>
         </Grid>
@@ -88,6 +134,9 @@ const CreateEvent = () => {
               label="Venue"
               variant="outlined"
               size="small" // Adjust the size as needed
+              name='eventvenue'
+              value={eventDetails.eventvenue}
+              onChange={handleEventDetailsChange}
             />
           </div>
         </Grid>
@@ -101,6 +150,9 @@ const CreateEvent = () => {
               variant="outlined"
               size="small" // Adjust the size as needed
               type='file'
+              name='eventimage'
+              onChange={handleEventFileChange}
+
             />
           </div>
         </Grid>
@@ -170,27 +222,34 @@ const CreateEvent = () => {
       </Dialog>
 
     
-     <div className='workshoplist-container'>
-      
-        <Grid container spacing={2} style={{width:'100%'}}>
-          {workshops.map((workshop, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <div className='workshop-item'>
-                <ul>
-                  <li>{`Name: ${workshop.workshopname}`}</li>
-                  <li>{`Description: ${workshop.workshopdescription}`}</li>
-                  <li>
-                    <Button color='error'>Remove</Button>
-                  </li>
-                </ul>
+      <div className='workshoplist-container'>
+      <Grid container spacing={2} style={{ width: '100%' }}>
+        {workshops.map((workshop, index) => (
+          <Grid item xs={12} sm={6} md={3} key={index}>
+            <div className='workshop-item'>
+              <h6>{workshop.workshopname}</h6>
+              <ul>
+                <li style={{fontSize:'10px'}}>{`Description: ${workshop.workshopdescription}`}</li>
+                <li style={{fontSize:'10px'}}>{`Date: ${workshop.workshopdate}`}</li>
+                <li style={{fontSize:'10px'}}>{`Venue: ${workshop.workshopvenue}`}</li>
+                <li style={{fontSize:'10px'}}>{`Icon: ${workshop.workshopicon}`}</li>
+              </ul>
+              <div style={{ marginTop: '10px', textAlign:'start' }}>
+                <Button style={{height:'20px',width:'auto',fontSize:'8px'}} 
+                variant='contained' color='secondary' onClick={() => handle_removeWorkshops(index)}>
+                  Remove
+                </Button>
               </div>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
-     <Button > </Button>
-      
+            </div>
+          </Grid>
+        ))}
+      </Grid>
     </div>
+    </div>
+    <div className='bottom-button-container'>
+        <Button variant='contained' onClick={handle_EventRegistration}>Register</Button>
+    </div>
+    
     </div>
   );
 }
