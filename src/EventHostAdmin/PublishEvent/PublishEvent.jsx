@@ -45,7 +45,7 @@ const PublishEvent = () => {
         {approvedStatus ===true ? 
           <Button className='button-custom-style'>Publish</Button>
           :
-          <Typography style={{fontSize:'14px',color:'red'}}>The approval for the event is currently pending.</Typography>
+          <Typography className='status-text' >The approval for the event is currently pending.</Typography>
         }
       </div>
       {/* <div className='event-not-approved'>

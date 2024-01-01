@@ -1,0 +1,48 @@
+/* styles.css */
+
+:root {
+    --font-family: 'Work Sans', sans-serif;
+    --font-size: 14px;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 700;
+    
+    --primary-light: #69696a;
+    --primary-main: #28282a;
+    --primary-dark: #1e1e1f;
+    
+    --secondary-light: #fff5f8;
+    --secondary-main: #ff3366;
+    --secondary-dark: #e62958;
+    
+    --warning-main: #ffc071;
+    --warning-dark: #ffb25e;
+    
+    --error-light: #ffebef;
+    --error-main: #ff3366;
+    --error-dark: #e62958;
+    
+    --success-light: #ebf7f1;
+    --success-main: #4caf50;
+    --success-dark: #388e3c;
+    
+    --background-default: #ffffff;
+    --background-placeholder: #e0e0e0;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+  }
+  
+  .font-header {
+    color: var(--primary-main);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+  }
+  
+  /* Add styles for h1, h2, h3, h4, h5, h6, subtitle1, body1, and body2 as needed */
+  
+  /* Example usage in a React component */
+  
+  

@@ -6,12 +6,10 @@ import Login from './container/Login/Login';
 import SignIn from './container/SignIn/SignIn';
 import PersistentDrawerLeft from './container/SideDrawer/SideDrawer';
 import EventRegistration from './EventHostAdmin/Regstration/EventRegistration';
-import CreateEvent from './EventHostAdmin/Regstration/CreateEvent';
-import Dashboard from './EventHostAdmin/Dashboard/Dashboard';
-import PublishEvent from './EventHostAdmin/PublishEvent/PublishEvent';
-import WorkshopView from './EventHostAdmin/Workshop/WorkshopView';
-import HostRouting from './Routes/HostRouting';
 import { useRef } from 'react';
+import Home from './LandingPage/Home';
+import SignInNew from './container/SignIn/SignInNew';
+import SignUp from './container/SignUp/SignUp';
 
 function App() {
 
@@ -30,20 +28,24 @@ function App() {
     
     
     // <div className="App">
-    <BrowserRouter>
-    {path.current !== '/drawer'&&
+    //   <Home/>
+    // </div>
+      
+      <BrowserRouter>
+    {/* {path.current !== '/drawer'&&
     <HeaderUi/>
-    }
+    } */}
       <Routes>
-        <Route path='/' element={<LandingPage/>} />
+        <Route path='/' element={<Home/>} />
+        <Route path='/signuphere' element={<SignInNew/>} />
         <Route path='/login' element={<Login/>} />
         <Route path='/signin' element={<SignIn/>} />
+        <Route path='/signUp' element={<SignUp/>} />
         <Route path='/drawer' element={<PersistentDrawerLeft/>} />
         <Route path='/eventRegistration' element={<EventRegistration/>} />
-        {/* <Route path='/workshop' element={<WorkshopView/>} /> */}
-        {/* <Route path='/sidebar' element={<HostRouting/>} /> */}
+      
       </Routes> 
-      </BrowserRouter>
+      </BrowserRouter> 
   );
 }
 

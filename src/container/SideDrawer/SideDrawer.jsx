@@ -52,7 +52,7 @@ export default function PermanentDrawerLeft() {
         setPage(<WorkshopView/>)
         break;
     default:
-      setPage(<PublishEvent/>)
+      setPage(<CreateEvent/>)
    }
   },[pageType])
 

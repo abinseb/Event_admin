@@ -87,4 +87,8 @@
        padding-left: 7%;
         
     }
+
+    .button-custom-class{
+       margin-left: 15% !important;
+    }
 }

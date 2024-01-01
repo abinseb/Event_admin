@@ -1,16 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './login.css'
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import ToastMessage from '../../components/ToastNotifications/ToastMessage'
+import CustomAlerts from '../../components/Alert/Alert'
 const Login = () => {
 const navigate = useNavigate();
-  const handle_Login=()=>{
+
+const [notification,setNotification] = useState(null);
+
+
+  const handle_Login=async()=>{
       console.log("Login login");
-      navigate('/drawer')
+      await setNotification(NotificationMessage());
+      await navigate('/drawer')
+      // setNotification(AlertShows());
   }
+
+  const NotificationMessage=()=>{
+    return <ToastMessage type='error' message='Login Success' />
+  }
+
+  const AlertShows=()=>{
+    let count = 1;
+   return <CustomAlerts type='error' tittle='Error' message='Invalid credentials' status={true} count={count+=1} />
+  }
+
+ 
  
   return (
-    <div className='background-container' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <div className='background-container-login'>
       <div className='box-container'>
         <div className='image-view-container'> 
           <img  className='image-shape' src={require('../../image/red_1240336.png')}  /> 
@@ -35,6 +55,7 @@ const navigate = useNavigate();
           </div>
         </div>
       </div>
+      {notification}
     </div>
   
   )

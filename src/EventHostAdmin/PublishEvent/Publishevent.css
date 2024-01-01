@@ -1,8 +1,7 @@
 .container-custom-outer{
     display: flex;
-    height: 100vh;
+    height: 80vh;
     width: 100%;
-
     flex-direction: column;
   
 }
@@ -12,7 +11,7 @@
     display: flex;
     width: 100%;
     background-color: blue;
-    height: 40%;
+    height: 50%;
 }
 
 .image-custom{
@@ -129,6 +128,7 @@ ul {
     justify-content: space-evenly;
     margin-top: 3%;
     margin-bottom: 1%;
+    /* margin-top: 10%; */
 }
 
 .button-custom-style{
@@ -139,4 +139,18 @@ ul {
     /* style={{backgroundColor:'lightgoldenrodyellow', display:'flex',justifyContent:'center'}} */
     display: flex;
     justify-content: center;
+}
+
+.status-text{
+   
+    font-size: 14px !important;
+    color: red;
+}
+
+
+@media only screen and(max-width:800px){
+    .status-text{
+        padding-top: 10px !important;
+    }
+   
 }
