@@ -31,7 +31,7 @@ export default function EventTopScreen() {
       >
         Register for seamless conducting of events
       </Typography>
-      <Button
+      {/* <Button
       variant="contained"
       size="large"
       sx={{
@@ -43,7 +43,7 @@ export default function EventTopScreen() {
       }}
     >
       Register
-    </Button>
+    </Button> */}
       <Typography variant="body2" color="inherit" sx={{ mt: 2 }}>
         Discover the experience
       </Typography>

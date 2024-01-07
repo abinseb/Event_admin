@@ -1,5 +1,5 @@
 .registration-container{
-    background-color:#E8F5F8;
+    background-color:#F0F8E1;
     min-height: 100vh;
     justify-content: center;
     align-items: center;
@@ -53,6 +53,7 @@
 
 .text-field-container{
     width: 70%;
+    height: 100% !important;
     border-width:1;
 }
 
@@ -77,6 +78,13 @@
 
     
 }
+
+/* @media only screen and (max-width:1000px){
+    .button-custom-class{
+        margin-left: 50%;
+        background-color: blue;
+    }
+} */
 
 @media only screen and (max-width:500px){
     .registration-container{

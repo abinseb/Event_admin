@@ -1,39 +1,83 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import { Field, Form, FormSpy } from 'react-final-form';
 import Typography from '../../components/LandingNew/components/Typography';
 import AppFooter from '../../components/LandingNew/views/AppFooter';
 import AppAppBar from '../../components/LandingNew/views/AppAppBar';
 import AppForm from '../../components/LandingNew/views/AppForm';
-// import { email, required } from './modules/form/validation';
+import { required } from '../../components/LandingNew/form/validation';
+import { Field, Form, FormSpy } from 'react-final-form';
 import RFTextField from '../../components/LandingNew/form/RFTextField';
 import FormButton from '../../components/LandingNew/form/FormButton';
 import FormFeedback from '../../components/LandingNew/form/FormFeedback';
 import withRoot from '../../components/LandingNew/withRoot';
+import { HostSignUp } from '../../API /Registration';
+import { useNavigate } from 'react-router-dom';
+import ToastMessage from '../../components/ToastNotifications/ToastMessage';
+
+
 
 function SignUp() {
-  const [sent, setSent] = React.useState(false);
+  const [sent, setSent] = useState(false);
 
+  const [notification,setNotification] = useState(null);
+
+  const navigate = useNavigate();
   const validate = (values) => {
-    // const errors = required(['firstName', 'lastName', 'email', 'password'], values);
+    const errors = required(['organization','email','mobile', 'password','confirmpassword'], values);
+    
+    // const errors = {};
 
-    // if (!errors.email) {
-    //   const emailError = email(values.email);
-    //   if (emailError) {
-    //     errors.email = emailError;
-    //   }
-    // }
+    if(values.password !== values.confirmpassword){
+      errors.confirmpassword = 'Password Mismatch';
+    }
 
-    // return errors;
+    if (!values.email) {
+      errors.email = 'Required';
+    }
+
+    // Add other validation rules as needed
+
+    return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
+  const handleSubmit = async (values) => {
+    try {
+      const userData = {
+        organization:values.organization,
+        email:values.email,
+        mobile:values.mobile,
+        password:values.password,
+      }
+     console.log(userData);
+     const signupresponse = await HostSignUp(userData);
+     
+      console.log("registration success",signupresponse)
+      if(signupresponse === 201){
+        setNotification(ToastMessageDisplay('success','SignUp Success'))
+         
+          navigate('/signinhere');
+      }
+      else{
+          setNotification(ToastMessageDisplay('error','Sign Up Failed'))
+        //  alert("Error");
+      }
+     
+      setSent(false);
+      // navigate('/signuphere')
+
+    } catch (error) {
+      console.error('API request failed:', error.message);
+      setNotification(ToastMessageDisplay('error','Sign Up Failed'))
+    }
   };
+
+  const ToastMessageDisplay=(type,message)=>{
+    return <ToastMessage type={type} message={message} />
+  }
 
   return (
+
     <React.Fragment>
       <AppAppBar />
       <AppForm>
@@ -42,7 +86,7 @@ function SignUp() {
             Sign Up
           </Typography>
           <Typography variant="body2" align="center">
-            <Link href="/premium-themes/onepirate/sign-in/" underline="always">
+            <Link href="/signinhere" underline="always">
               Already have an account?
             </Link>
           </Typography>
@@ -54,43 +98,20 @@ function SignUp() {
         >
           {({ handleSubmit: handleSubmit2, submitting }) => (
             <Box component="form" onSubmit={handleSubmit2} noValidate sx={{ mt: 6 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    autoFocus
-                    component={RFTextField}
-                    disabled={submitting || sent}
-                    autoComplete="given-name"
-                    fullWidth
-                    label="First name"
-                    name="firstName"
-                    required
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    component={RFTextField}
-                    disabled={submitting || sent}
-                    autoComplete="family-name"
-                    fullWidth
-                    label="Last name"
-                    name="lastName"
-                    required
-                  />
-                </Grid>
-              </Grid>
+              
               <Field
-                // autoComplete="email"
+                // autoComplete="organisationname"
                 component={RFTextField}
-                // disabled={submitting || sent}
+                disabled={submitting || sent}
                 fullWidth
-                label="Mobile"
+                label="Organization Name"
                 margin="normal"
-                name="Mobile"
+                name="organization"
                 required
               />
-               <Field
-                autoComplete="email"
+
+              <Field
+                // autoComplete="email"
                 component={RFTextField}
                 disabled={submitting || sent}
                 fullWidth
@@ -99,18 +120,44 @@ function SignUp() {
                 name="email"
                 required
               />
+
               <Field
-                fullWidth
+                // autoComplete="tel"
                 component={RFTextField}
                 disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="new-password"
-                label="Password"
-                type="password"
+                fullWidth
+                label="Mobile"
                 margin="normal"
+                name="mobile"
+                required
               />
-              <FormSpy subscription={{ submitError: true }}>
+
+              <Field
+                autoComplete="new-password"
+                component={RFTextField}
+                disabled={submitting || sent}
+                fullWidth
+                label="Password"
+                margin="normal"
+                name="password"
+                required
+              />
+
+               <Field
+                // autoComplete="confirm-password"
+                component={RFTextField}
+                disabled={submitting || sent}
+                fullWidth
+                label="Confirm Password"
+                margin="normal"
+                name="confirmpassword"
+                type='password'
+                required
+              />
+            
+             
+              {/* Add more fields as needed */}
+              {/* <FormSpy subscription={{ submitError: true }}>
                 {({ submitError }) =>
                   submitError ? (
                     <FormFeedback error sx={{ mt: 2 }}>
@@ -118,7 +165,7 @@ function SignUp() {
                     </FormFeedback>
                   ) : null
                 }
-              </FormSpy>
+              </FormSpy> */}
               <FormButton
                 sx={{ mt: 3, mb: 2 }}
                 disabled={submitting || sent}
@@ -128,11 +175,16 @@ function SignUp() {
                 {submitting || sent ? 'In progress…' : 'Sign Up'}
               </FormButton>
             </Box>
+            
           )}
+          
         </Form>
+     
       </AppForm>
       <AppFooter />
+      {notification}
     </React.Fragment>
+  
   );
 }
 

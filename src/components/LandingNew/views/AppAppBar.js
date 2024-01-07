@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import AppBar from '../components/AppBar';
 import Toolbar from '../components/Toolbar';
 import { Button, Typography } from '@mui/material';
-
+import { useNavigate } from 'react-router-dom';
 const rightLink = {
   fontSize: 16,
   ml: 3,
@@ -12,6 +12,11 @@ const rightLink = {
 };
 
 function AppAppBar() {
+  const navigation = useNavigate();
+
+  const handleNavigation=()=>{
+    navigation('/');
+  }
   return (
     <div>
       <AppBar position="fixed" sx={{ backgroundColor: '#000' }}>
@@ -22,6 +27,7 @@ function AppAppBar() {
             underline="none"
             color="inherit"
             sx={{ fontSize: 24 }}
+            onClick={handleNavigation}
           >
             {'ICT EVENT'}
           </Typography>
@@ -30,7 +36,7 @@ function AppAppBar() {
               color="inherit"
               variant="h6"
               underline="none"
-              to='/signuphere'
+              to='/signinhere'
               sx={{
                 ...rightLink,
                 color: 'white',

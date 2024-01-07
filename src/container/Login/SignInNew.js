@@ -5,7 +5,7 @@ import Link from '@mui/material/Link';
 import Typography from '../../components/LandingNew/components/Typography';
 import AppFooter from '../../components/LandingNew/views/AppFooter';
 import AppAppBar from '../../components/LandingNew/views/AppAppBar';
-// import { email, required } from '../../components/LandingNew/';
+import { email, required } from '../../components/LandingNew/form/validation';
 import RFTextField from '../../components/LandingNew/form/RFTextField';
 import FormButton from '../../components/LandingNew/form/FormButton'
 import FormFeedback from'../../components/LandingNew/form/FormFeedback';
@@ -13,27 +13,75 @@ import withRoot from '../../components/LandingNew/withRoot';
 
 import AppForm from '../../components/LandingNew/views/AppForm';
 import { useNavigate } from 'react-router-dom';
+import { Co2Sharp } from '@mui/icons-material';
+import { Host_Login } from '../../API /Login_USERS';
+import { URL_Fetch } from '../../API /URL_Fetch';
+import axios from 'axios';
 function SignInNew() {
+  const url = URL_Fetch();
   const [sent, setSent] = React.useState(false);
 
   const navigate = useNavigate();
 
   const validate = (values) => {
-    // const errors = required(['email', 'password'], values);
+    const errors = required(['email', 'password'], values);
 
-    // if (!errors.email) {
-    //   const emailError = email(values.email);
-    //   if (emailError) {
-    //     errors.email = emailError;
-    //   }
-    // }
+    if (!errors.email) {
+      const emailError = email(values.email);
+      if (emailError) {
+        errors.email = emailError;
+      }
+    }
 
-    // return errors;
+    return errors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async(values) => {
     setSent(true);
-    navigate('/drawer')
+    console.log(values.email,"password",values.password)
+    // try{
+    // const loginResponse =await Host_Login(values.email,values.password);
+    // await console.log("LOginResponse",loginResponse);
+    // if(loginResponse.status === 200){
+    //   const loginData =await loginResponse.data;
+    //   await sessionStorage.setItem("token",loginData.token);
+    //   await navigate('/drawer');
+    // }
+    // else if(loginResponse === undefined){
+    //   alert('Invalid Credentials');
+    //   setSent(false);
+    // }
+    // else{
+    //   alert("Try after sometime");
+    // }
+      // console.log("success");
+     
+     //navigate('/drawer')
+     try{
+      const loginHost = await axios.post(`${url}/auth/login`,{
+          
+              "email" :values.email ,
+              "password" :values.password
+            })
+      console.log("login",loginHost);
+      if(loginHost.status === 200){
+        setSent(false);
+        const loginData = loginHost.data;
+          await sessionStorage.setItem("token",loginData.token);
+          console.log(loginData.token)
+          await navigate('/eventlist');
+      }
+      else{
+        alert("Invalid Credentials")
+        setSent(false);
+      }
+
+  }
+  catch(error){
+      alert("Inavalid");
+      setSent(false);
+  }
+
   };
 
   return (
@@ -47,7 +95,7 @@ function SignInNew() {
           <Typography variant="body2" align="center">
             {'Not a member yet? '}
             <Link
-            //   href="/premium-themes/onepirate/sign-up/"
+              href="/signUp"
               align="center"
               underline="always"
             >
@@ -63,7 +111,7 @@ function SignInNew() {
           {({ handleSubmit: handleSubmit2, submitting }) => (
             <Box component="form" onSubmit={handleSubmit2} noValidate sx={{ mt: 6 }}>
               <Field
-                autoComplete="email"
+                // autoComplete="email"
                 autoFocus
                 component={RFTextField}
                 disabled={submitting || sent}
@@ -86,7 +134,7 @@ function SignInNew() {
                 type="password"
                 margin="normal"
               />
-              <FormSpy subscription={{ submitError: true }}>
+              {/* <FormSpy subscription={{ submitError: true }}>
                 {({ submitError }) =>
                   submitError ? (
                     <FormFeedback error sx={{ mt: 2 }}>
@@ -94,7 +142,7 @@ function SignInNew() {
                     </FormFeedback>
                   ) : null
                 }
-              </FormSpy>
+              </FormSpy> */}
               <FormButton
                 sx={{ mt: 3, mb: 2 }}
                 disabled={submitting || sent}

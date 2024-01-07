@@ -4,9 +4,15 @@
     margin: 2%; */
 }
 .text-field-container{
-    width: 100%;
+    width: 400px;
 }
 
 .text-field-custom{
     padding: 2%;
+}
+
+@media only screen and (max-width:500px){
+    .text-field-container{
+        width: auto;
+    }
 }

@@ -1,17 +1,21 @@
-import { BrowserRouter, Route, Routes, useLocation, useNavigation } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigation } from 'react-router-dom';
 import './App.css';
 import HeaderUi from './container/Header/Header';
-import LandingPage from './LandingPage/LandingPage';
+
 import Login from './container/Login/Login';
-import SignIn from './container/SignIn/SignIn';
 import PersistentDrawerLeft from './container/SideDrawer/SideDrawer';
 import EventRegistration from './EventHostAdmin/Regstration/EventRegistration';
 import { useRef } from 'react';
 import Home from './LandingPage/Home';
-import SignInNew from './container/SignIn/SignInNew';
+import SignInNew from './container/Login/SignInNew';
 import SignUp from './container/SignUp/SignUp';
+import ErrorHandling from './container/ErrorHandling/ErrorHandling';
+import EventList from './EventHostAdmin/EventList/EventList';
+import CreateEvent from './EventHostAdmin/Regstration/CreateEvent';
 
 function App() {
+const token = sessionStorage.getItem("token");
+
 
   // const location = useLocation();
   // const {  pathname, search } = location;
@@ -37,13 +41,20 @@ function App() {
     } */}
       <Routes>
         <Route path='/' element={<Home/>} />
-        <Route path='/signuphere' element={<SignInNew/>} />
-        <Route path='/login' element={<Login/>} />
-        <Route path='/signin' element={<SignIn/>} />
+        <Route path='/signinhere' element={<SignInNew/>} />
+        {/* <Route path='/login' element={<Login/>} />
+        <Route path='/signin' element={<SignIn/>} /> */}
         <Route path='/signUp' element={<SignUp/>} />
-        <Route path='/drawer' element={<PersistentDrawerLeft/>} />
+        {token && <Route path='/drawer' element={<PersistentDrawerLeft/>} />}
+        <Route path='/drawer' element={<Navigate replace to="/signinhere"></Navigate>} />
         <Route path='/eventRegistration' element={<EventRegistration/>} />
-      
+        {token &&  <Route path='/eventlist' element={<EventList/>}/>}
+        <Route path='/eventlist' element={<Navigate replace to="/signinhere"></Navigate>}/>
+        
+       
+        <Route path='/eventRegister' element={<CreateEvent/>} />
+        <Route path='/*' element={<ErrorHandling/>} />
+
       </Routes> 
       </BrowserRouter> 
   );

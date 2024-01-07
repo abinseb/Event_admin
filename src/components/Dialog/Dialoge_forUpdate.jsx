@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import './Dialog.css';
 
 const Dialoge_forUpdate = ({open,onClose,onUpdate,initialData}) => {
-    const [updatedData,setUpdatedData] = useState(initialData);
-    console.log("UpdatedData",initialData);
+  const [updatedData, setUpdatedData] = useState(initialData);
+    console.log("UpdatedDatahooiii",initialData);
 
     const handleInputChange =(e)=>{
         const {name,value} = e.target;
@@ -19,16 +19,16 @@ const Dialoge_forUpdate = ({open,onClose,onUpdate,initialData}) => {
         onClose();
     }
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} >
         <DialogTitle>Edit Workshop</DialogTitle>
         <DialogContent className='dialog-content-container'>
         <div className='text-field-container'>
           <InputLabel htmlFor="name">Workshop Name</InputLabel>
           <TextField
             className='text-field-custom'
-            id="name"
-            name="name"
-            value={updatedData.name}
+            id="title"
+            name="title"
+            value={updatedData.title}
             onChange={handleInputChange}
             fullWidth
           />
@@ -47,9 +47,9 @@ const Dialoge_forUpdate = ({open,onClose,onUpdate,initialData}) => {
         <div className='text-field-container'>
           <InputLabel htmlFor="venue">Venue</InputLabel>
           <TextField
-            id="venue"
-            name="venue"
-            value={updatedData.venue}
+            id="venu"
+            name="venu"
+            value={updatedData.venu}
             onChange={handleInputChange}
             fullWidth
           />
@@ -59,9 +59,38 @@ const Dialoge_forUpdate = ({open,onClose,onUpdate,initialData}) => {
           <TextField
             className='text-field-custom'
             id="maximumParticipants"
-            name="maximumParticipants"
-            value={updatedData.maximumParticipants}
+            name="maximumparticipants"
+            value={updatedData.maximumparticipants}
             onChange={handleInputChange}
+            fullWidth
+          />
+        </div>
+        <div className='text-field-container'>
+          <InputLabel htmlFor="maximumParticipants">Upload Icon</InputLabel>
+          <TextField
+            className='text-field-custom'
+            id="icon"
+            name="icon"
+            type='file'
+            // value={updatedData.icon}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              
+              if (file) {
+                const reader = new FileReader();
+
+                reader.onloadend = () => {
+                  // Convert the file content to base64
+                  const base64Data = reader.result.split(',')[1];
+
+                  // Update the state with the base64 data
+                  setUpdatedData({ ...updatedData, icon: base64Data });
+                };
+
+                // Read the file as a data URL (base64)
+                reader.readAsDataURL(file);
+              }
+            }}
             fullWidth
           />
         </div>

@@ -1,19 +1,22 @@
 .custom-container-outer{
-   height: 100vh;
+   min-height: 100vh;
    background-color: #E8F5F8;
    display: flex;
    justify-content: center;
-   padding-top: 5%;
+
+  
 }
 
 .inner-container-box{
+
     display: flex;
-    width: 70%;
+    width: 80%;
     flex-wrap: nowrap;
     flex-direction: column;
     align-content: center;
     justify-content: flex-start;
     align-items: baseline;
+    margin-top: 10%;
 }
 
 @media only screen and (max-width:500px){

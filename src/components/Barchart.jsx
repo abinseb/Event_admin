@@ -1,24 +1,30 @@
 import  React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { colors } from '@mui/material';
 
-export default function BasicBars() {
+
+export default function BasicBars({totalWorkshopData , verifiedWorkshopData}) {
+  const workshopkeys = totalWorkshopData.map(item=>item.key);
+ const totalRegistrationValues = totalWorkshopData.map(item=>item.value);
+  const verifiedValues = verifiedWorkshopData.map(item =>item.value);
+
+  console.log("kkkkkkkkk",totalWorkshopData,"hhhhhh",verifiedWorkshopData,"keyys")
   const color=['#1A91B7','#61904A']
   return (
     <BarChart
         xAxis={[{
             scaleType:'band',
-            data:['Google','IBM','Oracle']
+            data:workshopkeys || null
         }]}
         series={[
             {
-                data:[400,400,400],
+                data:totalRegistrationValues|| null,
                 label:'Total Registration',
                 
             },
             {
-                data:[300,250,311],
-                label:'Verified'
+                data:verifiedValues || null,
+                label:'Verified',
+                type: 'bar',
             }
         ]}
       colors={color}

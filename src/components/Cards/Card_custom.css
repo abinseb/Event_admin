@@ -1,5 +1,5 @@
 .card-container{
-    /* width: 50%; */
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -23,11 +23,12 @@
     width: 55% !important;
 }
 .sub-details-text{
-    font-size: 50% !important;
+    font-size: 90% !important;
 }
 
 .card-bottom-action{
-  padding-left: 10cm;
+  margin-left: 20px;
+  /* margin-bottom: 10px; */
 }
 
 @media only screen and (max-width:900px) {

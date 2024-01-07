@@ -2,20 +2,24 @@ import React, { useState } from 'react';
 import { Button, Grid, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
 import './Registration.css';
 import { Event_registration_Function } from '../../API /Registration';
+import ToastMessage from '../../components/ToastNotifications/ToastMessage';
+import { isValidateDateGraiterThanCurrent } from '../../Validations/Validation';
+import AppBarNew from '../../components/Appbar/AppBarNew';
+import { useNavigate } from 'react-router-dom';
 const CreateEvent = () => {
 
+  const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [workshops, setWorkshops] = useState([]);
+  const [imag,setImage]= useState('');
+  const [workshopicon,setWorkshopIcon] = useState('');
   const [workshopDetails, setWorkshopDetails] = useState({
     workshopname:'',
     workshopdescription:'',
-    venue:'',
     workshopdate:'',
     workshopvenue:'',
+    maximumparticipants:'',
     workshopicon:'',
-
-
-
   });
 
   const [eventDetails , setEventDetails] = useState({
@@ -26,18 +30,29 @@ const CreateEvent = () => {
     eventimage:null
 });
 
+const [validationErrors, setValidationErrors] = useState({
+  eventname: false,
+  eventdescription: false,
+  eventdate: false,
+  eventvenue:false,
+  eventimage:false,
+});
+// Toast notifications
+const [notificationView,setNotificationView] = useState(null);
 
   const handleAddWorkshop = () => {
     setWorkshops([...workshops, workshopDetails]);
     setWorkshopDetails({  workshopname:'',
                           workshopdescription:'',
-                          venue:'',
                           workshopdate:'',
                           workshopvenue:'',
+                          maximumparticipants:'',
                           workshopicon:''
                         });
     setOpenDialog(false);
   };
+
+// remove the workshops
 const handle_removeWorkshops=(index)=>{
   const updatedWorkshops = [...workshops];
   updatedWorkshops.splice(index,1);
@@ -45,33 +60,87 @@ const handle_removeWorkshops=(index)=>{
 }
 
 const handleEventDetailsChange=(e)=>{
-  setEventDetails({...eventDetails,[e.target.name]:e.target.value});
+  const {name ,value} = e.target;
+
+  const isNumericOnly = /^[0-9]+$/;
+  const isValidInput = name === 'eventname' ? !isNumericOnly.test(value) : true;
+
+  setValidationErrors((prevErrors) => ({
+    ...prevErrors,
+    [name]: value.trim() === '', // Set to true if the field is empty
+  }));
+
+  setEventDetails({ ...eventDetails, [name]: value });
+  // setEventDetails({...eventDetails,[e.target.name]:e.target.value});
 }
 
 const handleEventFileChange=(e)=>{
-  const file = e.target.file[0];
-  setEventDetails({...eventDetails,eventimage:file});
+  // const file = e.target.files[0];
+  const data = new FileReader();
+  data.addEventListener('load',()=>{
+    const base64icon = data.result;
+    setEventDetails({...eventDetails,eventimage:base64icon});
+  })
+  data.readAsDataURL(e.target.files[0])
+  //  setEventDetails({...eventDetails,eventimage:imag});
 }
+
+console.log(imag);
 
 const handle_EventRegistration=async()=>{
       try{
+        if (
+          Object.values(eventDetails).some((value) => typeof value === 'string' && value.trim() === '')
+        ) {
+          setNotificationView(ToasNotification('error', 'All fields must be filled out.'));
+          return;
+        }
+
+        if(!isValidateDateGraiterThanCurrent(eventDetails.eventdate)){
+          setNotificationView(ToasNotification('error', 'Invalid Date'));
+          return;
+        }
         const registrationData ={
           eventDetails:{...eventDetails},
           workshops:[...workshops],
         };
         console.log("Dataa",registrationData);
       const RegistrationResponse = await Event_registration_Function(registrationData);
-        console.log("RegistrationData",RegistrationResponse.data.success);
+        console.log("RegistrationData",RegistrationResponse);
         if(RegistrationResponse.data.success === true){
-          alert("Event Created Successfully");
+          // alert("Event Created Successfully");
+          setNotificationView(ToasNotification('success','Event Registration Success'));
+          
+          setEventDetails({
+            eventname:'',
+            eventdescription:'',
+            eventdate:'',
+            eventvenue:'',
+            eventimage:null
+          })
+
+          navigate('/eventlist');
         }
+        // else{
+        //   setNotificationView(ToasNotification('error','Error'))
+        // }
       }
       catch(error){
         console.log("Error in eventregistration", error);
+        setNotificationView(ToasNotification('error','Error'))
       }
 }
+
+const ToasNotification=(type,message)=>{
+  return <ToastMessage type={type} message={message}/>
+}
+
+
   return (
+    <>
+   <AppBarNew/>
     <div className='registration-container'>
+      {notificationView}
       <div style={{width:'70%'}}>  
       <Typography variant='h5' className='tittle-custom-style'>Event Registration</Typography>  
     <Grid container spacing={1} className='grid-form-container'>
@@ -80,13 +149,15 @@ const handle_EventRegistration=async()=>{
             <label className='label-custom'>Event Name</label>
             <TextField
               className='text-field-container'
-              id="event-name"
-              label="Event Name"
-              variant="outlined"
-              size="small" // Adjust the size as needed
+              id='event-name'
+              label='Event Name'
+              variant='outlined'
               name='eventname'
+              type='text'
               value={eventDetails.eventname}
               onChange={handleEventDetailsChange}
+              error={validationErrors.eventname} // Set error prop based on validation status
+              helperText={validationErrors.eventname && 'Required'} // Display error message
             />
           </div>
         </Grid>
@@ -96,14 +167,16 @@ const handle_EventRegistration=async()=>{
             <label className='label-custom'>Description</label>
             <TextField
               className='text-field-container'
-              label="Event Name"
+              label="Description"
               variant="outlined"
               multiline
               rows={3}
-              size="small" // Adjust the size as needed
+              size="medium" // Adjust the size as needed
               name='eventdescription'
               value={eventDetails.eventdescription}
               onChange={handleEventDetailsChange}
+              error={validationErrors.eventdescription} // Set error prop based on validation status
+              helperText={validationErrors.eventdescription && 'Required'} 
 
             />
           </div>
@@ -117,10 +190,12 @@ const handle_EventRegistration=async()=>{
               id="eventdate"
               type='date'
               variant="outlined"
-              size="small" // Adjust the size as needed
+              size="medium" // Adjust the size as needed
               name='eventdate'
               value={eventDetails.eventdate}
               onChange={handleEventDetailsChange}
+              error={validationErrors.eventdate} // Set error prop based on validation status
+              helperText={validationErrors.eventdate && 'Required'} 
             />
           </div>
         </Grid>
@@ -133,10 +208,12 @@ const handle_EventRegistration=async()=>{
               id="eventdate"
               label="Venue"
               variant="outlined"
-              size="small" // Adjust the size as needed
+              size="medium" // Adjust the size as needed
               name='eventvenue'
               value={eventDetails.eventvenue}
               onChange={handleEventDetailsChange}
+              error={validationErrors.eventvenue} // Set error prop based on validation status
+              helperText={validationErrors.eventvenue && 'Required'} 
             />
           </div>
         </Grid>
@@ -146,12 +223,28 @@ const handle_EventRegistration=async()=>{
             <label className='label-custom'>Upload File</label>
             <TextField
               className='text-field-container'
-              id="event-name"
               variant="outlined"
-              size="small" // Adjust the size as needed
+              size="medium" // Adjust the size as needed
               type='file'
               name='eventimage'
-              onChange={handleEventFileChange}
+              onChange={(e) => {
+                const file = e.target.files[0];
+                
+                if (file) {
+                  const reader = new FileReader();
+
+                  reader.onloadend = () => {
+                    // Convert the file content to base64
+                    const base64Data = reader.result.split(',')[1];
+
+                    // Update the state with the base64 data
+                    setWorkshopDetails({ ...workshopDetails, workshopicon: base64Data });
+                  };
+
+                  // Read the file as a data URL (base64)
+                  reader.readAsDataURL(file);
+                }
+              }}
 
             />
           </div>
@@ -194,6 +287,14 @@ const handle_EventRegistration=async()=>{
           />
           <TextField
            style={{marginBottom:'5%'}}
+            label="Maximum participants"
+            variant="outlined"
+            fullWidth
+            value={workshopDetails.maximumparticipants}
+            onChange={(e) => setWorkshopDetails({ ...workshopDetails, maximumparticipants: e.target.value })}
+          />
+          <TextField
+           style={{marginBottom:'5%'}}
            label='Date'
           variant='outlined'
           value={workshopDetails.workshopdate}
@@ -202,15 +303,32 @@ const handle_EventRegistration=async()=>{
           onChange={(e)=> setWorkshopDetails({ ...workshopDetails,workshopdate:e.target.value})}
           />
           <label>Upload Icon</label>
-          <TextField 
-           style={{marginBottom:'5%'}}
-          variant='outlined'
-          fullWidth
-          value={workshopDetails.workshopicon}
-          type='file'
-          onChange={(e)=> setWorkshopDetails({...workshopDetails , workshopicon:e.target.value})}
+          <TextField
+                style={{ marginBottom: '5%' }}
+                variant='outlined'
+                fullWidth
+                name='workshopicon'
+                type='file'
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  
+                  if (file) {
+                    const reader = new FileReader();
 
-          />
+                    reader.onloadend = () => {
+                      // Convert the file content to base64
+                      const base64Data = reader.result.split(',')[1];
+
+                      // Update the state with the base64 data
+                      // setWorkshopDetails({ ...workshopDetails, workshopicon: base64Data });
+                        setEventDetails({...eventDetails,eventimage:base64Data});
+                    };
+
+                    // Read the file as a data URL (base64)
+                    reader.readAsDataURL(file);
+                  }
+                }}
+              />
           </div>
         </DialogContent>
         <DialogActions>
@@ -232,7 +350,8 @@ const handle_EventRegistration=async()=>{
                 <li style={{fontSize:'10px'}}>{`Description: ${workshop.workshopdescription}`}</li>
                 <li style={{fontSize:'10px'}}>{`Date: ${workshop.workshopdate}`}</li>
                 <li style={{fontSize:'10px'}}>{`Venue: ${workshop.workshopvenue}`}</li>
-                <li style={{fontSize:'10px'}}>{`Icon: ${workshop.workshopicon}`}</li>
+                <li style={{fontSize:'10px'}}>{`MaximumParticipants: ${workshop.maximumparticipants}`}</li>
+                {/* <li style={{fontSize:'10px'}}>{`Icon: ${workshop.workshopicon}`}</li> */}
               </ul>
               <div style={{ marginTop: '10px', textAlign:'start' }}>
                 <Button style={{height:'20px',width:'auto',fontSize:'8px'}} 
@@ -251,6 +370,7 @@ const handle_EventRegistration=async()=>{
     </div>
     
     </div>
+    </>
   );
 }
 
