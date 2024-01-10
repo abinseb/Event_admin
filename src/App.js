@@ -12,6 +12,9 @@ import SignUp from './container/SignUp/SignUp';
 import ErrorHandling from './container/ErrorHandling/ErrorHandling';
 import EventList from './EventHostAdmin/EventList/EventList';
 import CreateEvent from './EventHostAdmin/Regstration/CreateEvent';
+import { HPlusMobiledata } from '@mui/icons-material';
+import HomeParticipant from './Participants/Home/HomeParticipant';
+import PartcipantRegister from './Participants/Registration/PartcipantRegister';
 
 function App() {
 const token = sessionStorage.getItem("token");
@@ -42,8 +45,6 @@ const token = sessionStorage.getItem("token");
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/signinhere' element={<SignInNew/>} />
-        {/* <Route path='/login' element={<Login/>} />
-        <Route path='/signin' element={<SignIn/>} /> */}
         <Route path='/signUp' element={<SignUp/>} />
         {token && <Route path='/drawer' element={<PersistentDrawerLeft/>} />}
         <Route path='/drawer' element={<Navigate replace to="/signinhere"></Navigate>} />
@@ -51,8 +52,9 @@ const token = sessionStorage.getItem("token");
         {token &&  <Route path='/eventlist' element={<EventList/>}/>}
         <Route path='/eventlist' element={<Navigate replace to="/signinhere"></Navigate>}/>
         
-       
+       <Route path= '/participanthome' element={<HomeParticipant/>} />
         <Route path='/eventRegister' element={<CreateEvent/>} />
+        <Route path='/participantregister' element={<PartcipantRegister/>} />
         <Route path='/*' element={<ErrorHandling/>} />
 
       </Routes> 

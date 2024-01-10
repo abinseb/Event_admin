@@ -81,6 +81,10 @@ export default function PermanentDrawerLeft() {
     await nav("/");
   };
 
+  const handleNavigateToHome=()=>{
+    nav('/eventlist');
+  }
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -101,8 +105,8 @@ export default function PermanentDrawerLeft() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Event Management
+          <Typography onClick={handleNavigateToHome} variant="h6" noWrap component="div">
+           Home
           </Typography>
         </Toolbar>
       </AppBar>

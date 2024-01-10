@@ -69,24 +69,24 @@
     margin-bottom: 5%;
 }
 
-ul {
+/* ul {
     list-style-type: none;
     padding: 0;
   }
   
   ul li {
-    margin-bottom: 10px; /* Adjust as needed */
+    margin-bottom: 10px; 
     position: relative;
   }
   
   ul li::before {
-    content: '\25A0'; /* Unicode character for a square */
-    color: #3d444b; /* Adjust the color as needed */
-    font-size: 1.5em; /* Adjust the font size as needed */
-    margin-right: 5px; /* Adjust the spacing between the bullet and the text */
+    content: '\25A0'; 
+    color: #3d444b;
+    font-size: 1.5em;
+    margin-right: 5px; 
     vertical-align: middle;
     display: inline-block;
-}
+} */
 
 .box-div-text-arrange-container{
     display: flex;

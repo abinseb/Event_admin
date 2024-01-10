@@ -43,10 +43,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <>
-    {dashboardFulldata === undefined || dashboardFulldata.length ===0 ? 
-    <RedirectedToRegister />
-    : 
+    
     <div className='custom-container-outer'>
       <div className='inner-container-box'>
         <Grid container spacing={4} >
@@ -116,8 +113,7 @@ const Dashboard = () => {
         </Grid>
       </div>
     </div>
-}
-    </>
+
   );
 };
 

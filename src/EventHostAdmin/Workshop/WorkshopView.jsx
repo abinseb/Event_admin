@@ -125,10 +125,7 @@ const handleCancelDelete=()=>{
     return <ToastMessage type={type} message={msg} />
   }
   return (
-    <>
-    {workshopDetails === undefined ? 
-    <RedirectedToRegister/>
-    :
+  
     <div className='container-main_Workshop'>
       <div className='titile-containerBox'>
         <Button variant='outlined' onClick={Open_AddWorkshopDialog} className='top-add-button' endIcon={<ArrowForwardIcon />} >ADD</Button>
@@ -253,8 +250,7 @@ const handleCancelDelete=()=>{
         />
     </div>
      
-            }
-        </>
+      
   )
 }
 
