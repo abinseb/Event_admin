@@ -22,7 +22,7 @@ const DropdownList = ({datalist,label,name,handleChange}) => {
       >
         <MenuItem value="">Select..</MenuItem>
         {datalist && datalist.map((item)=>(
-            <MenuItem key={item._id} value={item.name} style={ { listStyleType: 'none'}}>
+            <MenuItem key={item._id} value={item._id} style={ { listStyleType: 'none'}}>
                 {item.name}
             </MenuItem>
         ))}

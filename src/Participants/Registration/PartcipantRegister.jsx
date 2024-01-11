@@ -19,17 +19,20 @@ import CardCheckbox from '../../components/CardWithCheckBox/CardCheckbox';
 import axios from 'axios';
 import { URL_Fetch } from '../../API /URL_Fetch';
 import SelectList from '../../components/DropdownSelectlist/SelectList';
-
+import ToastMessage from '../../components/ToastNotifications/ToastMessage';
+import { useNavigate } from 'react-router-dom';
 const ParticipantRegister = () => {
 
+  const navigate = useNavigate();
   const url = URL_Fetch();
   const [participantdata , setParticipantData] = useState([]);
   const [fieldData , setFielddata] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [stateList , setStateList] = useState([]);
   const [district , setDistrict] = useState([]);
-  const [selectedState , setSelectedState] = useState('');
-  
+  const [error,setError] = useState(null);
+  const [showNotification , setShowNotification] = useState('');
+
   useEffect(()=>{
     console.log("hiiiiii");
     RegistrationDataFetch();
@@ -51,6 +54,7 @@ const ParticipantRegister = () => {
   }
     catch(error){
       console.error(error);
+     
     }
   }
 
@@ -64,30 +68,69 @@ const ParticipantRegister = () => {
       console.error(error);
     }
   }
-  const handleCheckboxChange = (cardId, isSelected) => {
+  const handleCheckboxChange = (cardId) => {
     console.log("cardid",cardId)
     setSelectedCards((prevSelectedCards) => {
-      if (isSelected) {
-        // If checkbox is checked, add the cardId to the array
-        return {
-          ...prevSelectedCards,
-          [cardId]: true,
-        };
+      // Toggle the presence of the cardId in the array
+      if (prevSelectedCards.includes(cardId)) {
+        // If cardId is already present, remove it
+        return prevSelectedCards.filter((id) => id !== cardId);
       } else {
-        // If checkbox is unchecked, remove the cardId from the array
-        const { [cardId]: removedCard, ...updatedSelectedCards } = prevSelectedCards;
-        return updatedSelectedCards;
+        // If cardId is not present, add it
+        return [...prevSelectedCards, cardId];
       }
-
     });
   };
 
-const displayData=()=>{
-  setParticipantData((prevData)=>({
-    ...prevData,
-    ['workshops']:selectedCards
-}))
-  console.log("Selectedlist",participantdata)
+
+const RegistrationParticipate=async()=>{
+  try{
+    // const registrationdata = {
+    //                     participantdata:{...participantdata},
+    //                     selectedCards:[...selectedCards],
+    //                           }
+
+    console.log("RegDta",selectedCards);
+  const requestBody =await {
+    "event" : "6549f0527a62f323d043db53",
+    "state":participantdata["state"],
+    "district":participantdata["district"]
+  }
+ await fieldData.forEach(item=>{
+    if(item.name !== "workshops" ){
+    requestBody[item.name] = participantdata[item.name]
+    }
+    else{
+      requestBody[item.name] = selectedCards
+    }
+  })
+  console.log("Reg Object",requestBody);
+
+  const participantReg = await axios.post(`${url}/participants/add`,
+     requestBody
+    )
+
+    console.log("Reg Response",participantReg.data);
+    alert(participantReg.data.data);
+    setShowNotification(nofificationAlertReg('success',participantReg.data.data))
+    navigate('/participanthome')
+  }
+  catch(error){
+    console.log(error.response.data.errors[0].path );
+    setError(error);
+    setShowNotification(nofificationAlertReg('error',error.response.data.errors[0].msg))
+    
+  }
+}
+
+// notification Message
+const nofificationAlertReg=(type,msg)=>{
+  return(
+    <ToastMessage
+      type={type}
+      message={msg}
+    />
+  )
 }
 
 // textfield data
@@ -102,18 +145,20 @@ const handleChangeText=(e)=>{
 // gender radio value
 const handleChangeOfRadio=(Gender)=>{
 console.log("Gender",Gender);
-setParticipantData([
-  ...participantdata,
-  Gender
-])
+setParticipantData((prevData)=>({
+  ...prevData,
+  [Object.keys(Gender)[0]]:Object.values(Gender)[0]
+}))
+// [Object.keys(genderResponse)[0]]: Object.values(genderResponse)[0]
 }
 
 const handleDropdownChange=(listSelect)=>{
   console.log('Select',listSelect);
-  setParticipantData([
-    ...participantdata,
-    listSelect
-  ])
+
+  setParticipantData((prevData)=>({
+    ...prevData,
+    [Object.keys(listSelect)[0]]:Object.values(listSelect)[0]
+  }))
 }
 
 const stateListHandleChange=async(state)=>{
@@ -147,6 +192,8 @@ const districtHandleChange=(dist)=>{
           name={field.name}
           value={participantdata[field.name]}
           onChange={handleChangeText}
+          helperText={error && field.name === error.response.data.errors[0].path ? error.response.data.errors[0].msg : null }
+          error={Boolean(error && field.name === error.response.data.errors[0].path)}
         />
         );
 
@@ -178,7 +225,6 @@ const districtHandleChange=(dist)=>{
                 imageUrl={card.icon}
                 title={card.title}
                 description={card.description}
-                isSelected={selectedCards[card._id] || false}
                 onCheckboxChange={handleCheckboxChange}
                 date={new Date(card.date).toISOString().split('T')[0]}
                 starttime='09:30 Am'
@@ -254,9 +300,9 @@ const districtFetch=async(state)=>{
     
     </div>
     <div className='event-partic-button-view'>
-      <Button variant='contained' onClick={displayData} className='event-partici-button'>Register</Button>
+      <Button variant='contained' onClick={RegistrationParticipate} className='event-partici-button'>Register</Button>
       </div>
-      
+      {showNotification}
     </div>
   );
 };

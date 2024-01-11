@@ -1,7 +1,13 @@
 import React from 'react'
 import './Home.css';
 import { Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 const HomeParticipant = () => {
+
+  const navigate = useNavigate();
+  const navigationToRegister=()=>{
+    navigate('/participantregister');
+  }
   return (
     <div className='event-participant-container'>
         <div className='event-participants-details'>
@@ -12,7 +18,7 @@ const HomeParticipant = () => {
             
             <div className='event-partic-ButtonView'>
 
-            <button class="button-19" role="button">Register</button>
+            <button class="button-19" role="button" onClick={navigationToRegister}>Register</button>
             </div>
             <div className='event-partic-details-view' >
               <Typography className='event-part-Text' style={{fontStyle:'italic'}}>"Events are occasions that bring people together for a specific purpose,such as 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import './Card_custom.css';
 
 const Card_Update = ({ workshopname, date, venue, maxparticipants, onEditClick, imageData,onDeleteClicked }) => {
@@ -30,7 +30,7 @@ const Card_Update = ({ workshopname, date, venue, maxparticipants, onEditClick, 
           }}
           onClick={onDeleteClicked}
         >
-          <CloseIcon sx={{ fontSize: 25, color: 'red' }} />
+          <DeleteIcon sx={{ fontSize: 25, color: 'red' }} />
         </IconButton>
       </div>
       <CardActions className='card-bottom-action'>

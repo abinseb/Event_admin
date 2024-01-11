@@ -7,7 +7,7 @@ import Checkbox from '@mui/material/Checkbox';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const CardCheckbox = ({id, imageUrl,starttime,endtime, date,title, description, isSelected, onCheckboxChange }) => {
-    const [checked, setChecked] = useState(isSelected);
+    const [checked, setChecked] = useState(false);
     
     const handleCheckboxChange = () => {
         setChecked(!checked);

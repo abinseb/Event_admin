@@ -247,6 +247,7 @@ const handleCancelDelete=()=>{
           open={confirmDialog}
           onClose={handleCancelDelete}
           onConfirm={handleDeleteWorkshop}
+          message={'Are you sure you want to delete this workshop?'}
         />
     </div>
      
