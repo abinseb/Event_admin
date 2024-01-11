@@ -6,6 +6,7 @@ import ToastMessage from '../../components/ToastNotifications/ToastMessage';
 import { isValidateDateGraiterThanCurrent } from '../../Validations/Validation';
 import AppBarNew from '../../components/Appbar/AppBarNew';
 import { useNavigate } from 'react-router-dom';
+import DateAndTimePicker from '../../components/DateTimePicker/Date&Time';
 const CreateEvent = () => {
 
   const navigate = useNavigate();
@@ -25,15 +26,17 @@ const CreateEvent = () => {
   const [eventDetails , setEventDetails] = useState({
     eventname:'',
     eventdescription:'',
-    eventdate:'',
+    // startdate_time:'',
+    // enddate_time:'',
     eventvenue:'',
     eventimage:null
 });
 
 const [validationErrors, setValidationErrors] = useState({
   eventname: false,
-  eventdescription: false,
-  eventdate: false,
+  eventdescription:false,
+  startdate_time:false,
+  enddate_time:false,
   eventvenue:false,
   eventimage:false,
 });
@@ -74,16 +77,16 @@ const handleEventDetailsChange=(e)=>{
   // setEventDetails({...eventDetails,[e.target.name]:e.target.value});
 }
 
-const handleEventFileChange=(e)=>{
-  // const file = e.target.files[0];
-  const data = new FileReader();
-  data.addEventListener('load',()=>{
-    const base64icon = data.result;
-    setEventDetails({...eventDetails,eventimage:base64icon});
-  })
-  data.readAsDataURL(e.target.files[0])
-  //  setEventDetails({...eventDetails,eventimage:imag});
-}
+// const handleEventFileChange=(e)=>{
+//   // const file = e.target.files[0];
+//   const data = new FileReader();
+//   data.addEventListener('load',()=>{
+//     const base64icon = data.result;
+//     setEventDetails({...eventDetails,eventimage:base64icon});
+//   })
+//   data.readAsDataURL(e.target.files[0])
+//   //  setEventDetails({...eventDetails,eventimage:imag});
+// }
 
 console.log(imag);
 
@@ -96,10 +99,10 @@ const handle_EventRegistration=async()=>{
           return;
         }
 
-        if(!isValidateDateGraiterThanCurrent(eventDetails.eventdate)){
-          setNotificationView(ToasNotification('error', 'Invalid Date'));
-          return;
-        }
+        // if(!isValidateDateGraiterThanCurrent(eventDetails.startdate_time)){
+        //   setNotificationView(ToasNotification('error', 'Invalid Date'));
+        //   return;
+        // }
         const registrationData ={
           eventDetails:{...eventDetails},
           workshops:[...workshops],
@@ -134,7 +137,12 @@ const handle_EventRegistration=async()=>{
 const ToasNotification=(type,message)=>{
   return <ToastMessage type={type} message={message}/>
 }
-
+const handleTimeDateChange=(newdate,namevalue)=>{
+      console.log("new date",newdate);
+    const Date =  newdate["$d"].toISOString();
+    console.log("FetchedDate",Date,namevalue);
+    setEventDetails({ ...eventDetails, [namevalue]: Date });
+}
 
   return (
     <>
@@ -184,18 +192,19 @@ const ToasNotification=(type,message)=>{
 
         <Grid item xs={12} md={6}>
           <div className='label-textbox-container'>
-            <label className='label-custom'>Date</label>
-            <TextField
-              className='text-field-container'
-              id="eventdate"
-              type='date'
-              variant="outlined"
-              size="medium" // Adjust the size as needed
-              name='eventdate'
-              value={eventDetails.eventdate}
-              onChange={handleEventDetailsChange}
-              error={validationErrors.eventdate} // Set error prop based on validation status
-              helperText={validationErrors.eventdate && 'Required'} 
+            <label className='label-custom'>Starting Date & Time</label>
+            <DateAndTimePicker
+              onDateTimeChange={handleTimeDateChange}
+              name='startdate_time'
+            />
+          </div>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <div className='label-textbox-container'>
+            <label className='label-custom'>Ending Date & Time</label>
+            <DateAndTimePicker
+              onDateTimeChange={handleTimeDateChange}
+              name='enddate_time'
             />
           </div>
         </Grid>
@@ -238,7 +247,7 @@ const ToasNotification=(type,message)=>{
                     const base64Data = reader.result.split(',')[1];
 
                     // Update the state with the base64 data
-                    setWorkshopDetails({ ...workshopDetails, workshopicon: base64Data });
+                    setEventDetails({ ...eventDetails, eventimage: base64Data });
                   };
 
                   // Read the file as a data URL (base64)

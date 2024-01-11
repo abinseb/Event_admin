@@ -7,15 +7,16 @@ const token = sessionStorage.getItem('token');
 export const Event_registration_Function=async(eventData)=>{
     console.log("Token",token);
     try{
-        console.log('EventData,',eventData.eventDetails)
+        console.log('EventData123,',eventData.eventDetails)
         const event = await eventData.eventDetails;
-        console.log("new eventData",event.eventname)
+        console.log("new eventData",event.startdate_time)
        
     const RegistrationEvent = axios.post(`${url}/host/event/create`,{
         "title" :event.eventname,
         "description" : event.eventdescription,
         "venu" :event.eventvenue,
-        "date" : event.eventdate,
+        "start_date_time":event.startdate_time,
+        "end_date_time":event.enddate_time,
         "workshops" : eventData.workshops,
         "icon":event.eventimage
 

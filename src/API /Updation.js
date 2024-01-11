@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 const url = URL_Fetch();
-
+const eventid = localStorage.getItem("eventid");
 export const upDateWorkshop=async(workshop)=>{
     try{
         console.log("Edit data",workshop)
@@ -23,5 +23,26 @@ export const upDateWorkshop=async(workshop)=>{
     }
     catch(error){
 
+    }
+}
+
+ export const update_Event_details =async(eventdata)=>{
+    // console.log("api",eventdata);
+    try{
+        const updatevent = await axios.post(`${url}/host/event/edit`,{
+            "_id":eventdata._id,
+            "title" : eventdata.title,
+            "description" : eventdata.description,
+            "venu" : eventdata.venu,
+            "icon" : eventdata.icon ,
+            "start_date_time" :eventdata.startdate_time,
+            "end_date_time" : eventdata.enddate_time
+        })
+
+        return await updatevent
+    }
+    catch(error){
+        console.log(error);
+        return await error;
     }
 }

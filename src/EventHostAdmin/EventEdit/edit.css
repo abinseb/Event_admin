@@ -1,0 +1,52 @@
+/* reg.css */
+
+.event-edit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+    padding-top: 100px;
+   /* Adjust as needed */
+  }
+  
+  .event-edit-title-container {
+    margin-top: 20px; /* Adjust as needed */
+    margin-bottom: 20px;
+  }
+  
+  .event-edit-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+  }
+  
+  .event-edit-textbox-container {
+   
+    display: flex;
+    width:20cm;
+    flex-direction: column;
+    align-items: flex-start; 
+    margin-bottom: 15px;
+  }
+  
+  .label {
+    margin-bottom: 8px;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  
+  .event-textfield-style {
+    width: 700px; /* Adjust as needed */
+  }
+  
+  .event-partic-button-view{
+    margin-bottom: 20px;
+  
+  
+  }
+  
+  .event-edit-button{
+    background-color: rgb(84, 84, 114) !important;
+  }
+  

@@ -7,12 +7,12 @@
 }
 
 
-.image-container-custom{
+/* .image-container-custom{
     display: flex;
     width: 100%;
     background-color: blue;
     height: 50%;
-}
+} */
 
 .image-custom{
     height: 100%;
@@ -21,6 +21,7 @@
 
 .card-box-container{
     display: flex;
+    margin-top: 10%;
     background-color:#ffff;
     height: 65%;
     align-content: space-around;

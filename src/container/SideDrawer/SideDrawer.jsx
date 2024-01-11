@@ -35,6 +35,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import WorkshopView from "../../EventHostAdmin/Workshop/WorkshopView";
+import EventEdit from "../../EventHostAdmin/EventEdit/EventEdit";
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft() {
@@ -52,9 +53,9 @@ export default function PermanentDrawerLeft() {
       case "dashboard":
         setPage(<Dashboard />);
         break;
-      // case "eventRegistration":
-      //   setPage(<CreateEvent />);
-      //   break;
+      case "eventEdit":
+        setPage(<EventEdit/>);
+        break;
       case "publish":
         setPage(<PublishEvent />);
         break;
@@ -181,6 +182,18 @@ export default function PermanentDrawerLeft() {
                 <CorporateFareIcon />
               </ListItemIcon>
               <ListItemText primary="Workshop" />
+            </ListItemButton>
+
+            <ListItemButton
+                disablePadding
+                onClick={() => {
+                  handleNavigationToScreen("eventEdit");
+                }}
+              >
+                <ListItemIcon>
+                  <CorporateFareIcon />
+                </ListItemIcon>
+                <ListItemText primary="Edit Event" />
             </ListItemButton>
 
            

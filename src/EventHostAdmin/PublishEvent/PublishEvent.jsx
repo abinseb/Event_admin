@@ -31,9 +31,11 @@ const PublishEvent = () => {
 //  <RedirectedToRegister/>
 //   :
     <div className='container-custom-outer'>
-        <><div className='image-container-custom'>
+         <>
+         {/*<div className='image-container-custom'>
         <img className='image-custom'  src={`data:image/jpeg;base64,${eventData.icon}`}   alt='Eventvlogo image' />
-      </div><div className='card-box-container'>
+      </div> */}
+      <div className='card-box-container'>
           <Grid container spacing={2} className='grid-container'>
             <Grid item xs={12} md={6} className='grid-class-style'>
               <Box className='box-custom'>
