@@ -1,0 +1,18 @@
+.group-container{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    padding-top: 100px;
+}
+
+.group-button-view-container{
+    /* align-self:flex-start; */
+    padding-right: 650px;
+}
+
+.center-table{
+    padding-top: 20px;
+    width: 40%; 
+}

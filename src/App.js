@@ -16,6 +16,7 @@ import { HPlusMobiledata } from '@mui/icons-material';
 import HomeParticipant from './Participants/Home/HomeParticipant';
 import PartcipantRegister from './Participants/Registration/PartcipantRegister';
 import EventEdit from './EventHostAdmin/EventEdit/EventEdit';
+import AddGroup from './EventHostAdmin/AddGroup/AddGroup';
 
 function App() {
 const token = sessionStorage.getItem("token");
@@ -53,11 +54,14 @@ const token = sessionStorage.getItem("token");
         {token &&  <Route path='/eventlist' element={<EventList/>}/>}
         <Route path='/eventlist' element={<Navigate replace to="/signinhere"></Navigate>}/>
         
-       <Route path= '/participanthome' element={<HomeParticipant/>} />
+       <Route path= '/participanthome/:eventid' element={<HomeParticipant/>} />
         <Route path='/eventRegister' element={<CreateEvent/>} />
         <Route path='/participantregister' element={<PartcipantRegister/>} />
         <Route path='/editEvent' element={<EventEdit/>} />
+        <Route path='/addgroup' element={<AddGroup/>} />
+
         <Route path='/*' element={<ErrorHandling/>} />
+   
 
       </Routes> 
       </BrowserRouter> 

@@ -36,6 +36,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import WorkshopView from "../../EventHostAdmin/Workshop/WorkshopView";
 import EventEdit from "../../EventHostAdmin/EventEdit/EventEdit";
+import EditIcon from '@mui/icons-material/Edit';
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft() {
@@ -191,7 +192,7 @@ export default function PermanentDrawerLeft() {
                 }}
               >
                 <ListItemIcon>
-                  <CorporateFareIcon />
+                  <EditIcon />
                 </ListItemIcon>
                 <ListItemText primary="Edit Event" />
             </ListItemButton>

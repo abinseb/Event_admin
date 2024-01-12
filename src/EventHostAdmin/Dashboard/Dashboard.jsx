@@ -23,7 +23,7 @@ const Dashboard = () => {
         console.log(dashbord);
 
         const workshopKey = dashbord.total_workshop.map((workshop) => workshop.key);
-        console.log("Workshop",workshopKey);
+        console.log("Workshopnew",workshopKey);
         setWorkshop(workshopKey);
 
         const totalReg = dashbord.total_workshop.map((workshop) => workshop.value);
@@ -78,6 +78,8 @@ const Dashboard = () => {
             />
           </Grid>
         </Grid>
+        {workshop.length > 0 &&
+
         <Grid container spacing={1} style={{ paddingTop: '5%' }}>
           <Grid item xs={12} md={8}>
             <Card className='card-with-graph'>
@@ -111,6 +113,7 @@ const Dashboard = () => {
             </Card>
           </Grid>
         </Grid>
+}
       </div>
     </div>
 

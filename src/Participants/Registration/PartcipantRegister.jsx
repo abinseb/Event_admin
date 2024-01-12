@@ -21,6 +21,7 @@ import { URL_Fetch } from '../../API /URL_Fetch';
 import SelectList from '../../components/DropdownSelectlist/SelectList';
 import ToastMessage from '../../components/ToastNotifications/ToastMessage';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 const ParticipantRegister = () => {
 
   const navigate = useNavigate();
@@ -32,6 +33,14 @@ const ParticipantRegister = () => {
   const [district , setDistrict] = useState([]);
   const [error,setError] = useState(null);
   const [showNotification , setShowNotification] = useState('');
+  // event id from the route
+  const location = useLocation();
+// Access the state object from the location
+const { state } = location;
+
+// Access the eventid from the state
+const eventId = state && state.eventid;
+
 
   useEffect(()=>{
     console.log("hiiiiii");
@@ -40,8 +49,9 @@ const ParticipantRegister = () => {
   },[])
 
   const RegistrationDataFetch=async()=>{
+    console.log("eventid",eventId);
     try{
-    const RegData =await axios.get(`${url}/form/field/6549f0527a62f323d043db53`);
+    const RegData =await axios.get(`${url}/form/field/${eventId}`);
     console.log("dattaaa",RegData.data);
     const Fields = await RegData.data.fields;
     setFielddata(Fields);
@@ -85,14 +95,11 @@ const ParticipantRegister = () => {
 
 const RegistrationParticipate=async()=>{
   try{
-    // const registrationdata = {
-    //                     participantdata:{...participantdata},
-    //                     selectedCards:[...selectedCards],
-    //                           }
+   
 
     console.log("RegDta",selectedCards);
   const requestBody =await {
-    "event" : "6549f0527a62f323d043db53",
+    "event" : eventId,
     "state":participantdata["state"],
     "district":participantdata["district"]
   }
@@ -257,7 +264,7 @@ const districtFetch=async(state)=>{
   return (
     <div className='participants-Registration-container'>
       <div className='event-parti-title-container'>
-        <Typography style={{ paddingRight: '30px', fontSize: '40px', fontWeight: '500' }}>Register..</Typography>
+        <Typography style={{ paddingRight: '30px', fontSize: '40px', fontWeight: '500' }}>Register</Typography>
       </div>
       
       <div className='event-partic-form-container' >

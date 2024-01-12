@@ -3,6 +3,7 @@ import { URL_Fetch } from "./URL_Fetch";
 
 const url = URL_Fetch();
 const token = sessionStorage.getItem('token');
+const eventid = localStorage.getItem("eventid");
 
 export const Event_registration_Function=async(eventData)=>{
     console.log("Token",token);
@@ -43,7 +44,7 @@ export const Event_registration_Function=async(eventData)=>{
 
 // Signup event host 
 export const  HostSignUp=async(userdata)=>{
-   
+   console.log("eventid forupdate",eventid);
     try{
         console.log("userdataname",userdata)
         const signUpReguest = await axios.post(`${url}/auth/register`,{
@@ -66,6 +67,7 @@ export const  HostSignUp=async(userdata)=>{
 
 // Add insert
 export const AddWorkshopDetails=async(workshop)=>{
+    
     try{
         console.log("worksopgggg",workshop);
         const updateWorkshop = await axios.post(`${url}/host/workshop/add`,{
@@ -73,7 +75,7 @@ export const AddWorkshopDetails=async(workshop)=>{
             "title" :  workshop. workshopname,
             "date" : workshop.workshopdate,
             "maximumparticipants":workshop.maximumparticipants,
-            "event" : '6549f0527a62f323d043db53',
+            "event" : eventid,
             "venu" : workshop.workshopvenue,
             "icon"  : workshop.workshopicon,
         })

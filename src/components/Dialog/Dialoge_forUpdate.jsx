@@ -21,7 +21,7 @@ const Dialoge_forUpdate = ({open,onClose,onUpdate,initialData}) => {
   return (
     <Dialog open={open} onClose={onClose} >
         <DialogTitle>Edit Workshop</DialogTitle>
-        <DialogContent className='dialog-content-container'>
+        <DialogContent >
         <div className='text-field-container'>
           <InputLabel htmlFor="name">Workshop Name</InputLabel>
           <TextField
