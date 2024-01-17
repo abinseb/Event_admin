@@ -9,6 +9,8 @@ import {  WorkshopDataFetch, eventDataFetch_Single } from '../../API /GetDataFro
 import { useNavigate } from 'react-router-dom';
 import Dialog_box from '../../components/Dialog/Dilog_Box';
 import './boxlist.scss'
+import { DeleteEventFromDB } from '../../API /Deletion';
+import ConfirmationDialog from '../../components/Dialog/ConfrmationDialog';
 const PublishEvent = () => {
   const publishurl = window.location.href;
   const navigate = useNavigate();
@@ -18,32 +20,42 @@ const PublishEvent = () => {
   const [subEventlist,setSubEventlist] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [urlType , setUrl] = useState('');
+  const [confirmOpenDialog,setConfirmOpenDialog] = useState(false);
+  const [publishconfirm, setPublishConfirm] = useState(false);
+  
   
   useEffect(()=>{
     eventDetailsFetch();
   },[])
-
+  const formatDateTime = (dateTimeString) => {
+    return new Date(dateTimeString).toLocaleString('en-GB');
+  }
   const eventDetailsFetch=async()=>{
       const event = await eventDataFetch_Single();
       const workshop = await WorkshopDataFetch();
       console.log("Eventdataa",event);
+      event.data.start_date_time = formatDateTime(event.data.start_date_time)
+      event.data.end_date_time = formatDateTime(event.data.end_date_time)
       await setEventData(event.data)
       await setSubEventlist(workshop);
       console.log("WorkshopDetails",workshop);
 
   }
 
-  const publishEventDetails=async()=>{
+  // here open the popup and url of the published event is on that popup
+const publishEventDetails=async()=>{
     const dynamicURL = await `/participanthome/${eventData._id}`;
-    // navigate(dynamicURL);
     const topurl = new URL(publishurl)
    await setUrl(topurl.origin + dynamicURL);
    await dialogOpen();
   }
 
+  // popup for copy the published url
   const dialogOpen=()=>{
     setOpenDialog(true);
   }
+
+  // closing the popup
   const handleCloseDialog=()=>{
     setOpenDialog(false);
   }
@@ -58,10 +70,41 @@ const PublishEvent = () => {
       });
   };
 
+// delete the event before approve
+const eventDeleteBeforeApprove=async()=>{
+  console.log("Eventdelete",eventData._id);
+  const deleteEvent =await DeleteEventFromDB(eventData._id);
+  console.log(deleteEvent);
+  if(deleteEvent.status === 200){
+    navigate('/eventlist');
+  }
+  else if(deleteEvent.status === undefined){
+    alert("Deletion Failed");
+  }
+}
+// handle open the dialog
+const handleopenConfirmDialoge=()=>{
+  setConfirmOpenDialog(true);
+}
+// handle close the confirm dialog
+const handleCloseConfirmdialog=()=>{
+  setConfirmOpenDialog(false);
+}
 
-  return (
+// open the publish confirm dlalog
+const handleOpenPublish=()=>{
+  setPublishConfirm(true);
+}
+// close the publish confirm dialog, popup box
+const handleClosePublish=()=>{
+  setPublishConfirm(false);
+}
 
-    <div className='container-custom-outer' style={{backgroundImage:`url(data:image/jpeg;base64,${eventData.icon})` ,backgroundSize:'cover'}}>
+
+return (
+    <>
+{eventData &&
+    <div className='container-custom-outer' style={{backgroundImage:`url(data:image/jpeg;base64,${eventData.icon})` }}>
          <>
          {/*<div className='image-container-custom'>
         <img className='image-custom'  src={`data:image/jpeg;base64,${eventData.icon}`}   alt='Eventvlogo image' />
@@ -74,8 +117,8 @@ const PublishEvent = () => {
                 <div className='box-div-text-arrange-container'>
                   <h2>{eventData.title}</h2>
                   {/* <Typography className='event-title-class'>{eventData.title}</Typography> */}
-                  <Typography className='text2-style-class-time'>Start Date: {eventData.start_time_date}</Typography>
-                  <Typography className='text2-style-class-time'>End Date: {eventData.end_time_date}</Typography>
+                  <Typography className='text2-style-class-time'>Start Date: {eventData.start_date_time}</Typography>
+                  <Typography className='text2-style-class-time'>End Date: {eventData.end_date_time}</Typography>
                   <Typography className='text2-style-class-time'>Venue: {eventData.venu}</Typography>
                   {/* <Typography className='text4-style-class-description'>
                       {eventData.description}
@@ -105,19 +148,33 @@ const PublishEvent = () => {
             </Grid>
           </Grid>
         </div>
-        <div className='button-view-style-class'>
         {eventData.approve === true ?
-            <Button className='button-custom-style' onClick={publishEventDetails}>Publish</Button>
-            :
-           
-            <Typography className='status-text'>The approval for the event is currently pending.</Typography>
-            }
+        <div className='button-view-style-class'>
+            <Button className='button-custom-style' onClick={handleOpenPublish}>Publish</Button>
+            
         </div>
+        :
+        <div className='button-view-style-class'>
+        <Typography className='pulish-event-text-style'>Approval of Event is Pending,You can delete at any time</Typography>
+        <Button className='button-custom-delete-style'onClick={handleopenConfirmDialoge}>Delete</Button>
+      </div> 
+      }
         
         </>
-      {/* <div className='event-not-approved'>
-        <Typography style={{fontSize:'20px',color:'red'}}>Approval of Event is Pending,</Typography>
-      </div> */}
+        <ConfirmationDialog 
+          open={publishconfirm}
+          onClose={handleClosePublish}
+          onConfirm={publishEventDetails}
+          message={'Are you sure you want to Publish this event?'}
+        />
+
+        <ConfirmationDialog 
+          open={confirmOpenDialog}
+          onClose={handleCloseConfirmdialog}
+          onConfirm={eventDeleteBeforeApprove}
+          message={'Are you sure you want to delete this event?'}
+        />
+      
         <Dialog_box
         open={openDialog}
         message="Copy the published url"
@@ -126,8 +183,9 @@ const PublishEvent = () => {
         handleCopyUrl={handleCopyUrl}
       />
     </div>
-// }
-//     </>
+ 
+    }
+    </>
   )
 }
 

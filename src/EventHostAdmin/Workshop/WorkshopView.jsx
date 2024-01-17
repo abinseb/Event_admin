@@ -133,7 +133,7 @@ const handleCancelDelete=()=>{
       </div>
       <div className='card-container-box'>
         <Grid container spacing={1}>
-          {workshopDetails.map((workshop, index) => (
+          {workshopDetails && workshopDetails.map((workshop, index) => (
             <Grid item xs={12} md={4} key={index}>
               <Card_Update
                 imageData={workshop.icon}

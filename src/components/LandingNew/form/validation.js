@@ -27,3 +27,26 @@ function isEmail(string) {
       {},
     );
   }
+
+  export function isMobile(value) {
+    // Regular expression for a valid mobile number (assuming 10-digit numbers)
+    const re = /^[0-9]{10}$/;
+    return re.test(value);
+  }
+  
+  export function mobile(value) {
+    return value && !isMobile(value.trim()) ? 'Invalid mobile number' : null;
+  }
+  
+
+  // check the value is numeri or not
+  export function isNumericOnly(value) {
+    // Regular expression for a string containing only numeric characters
+    const re = /^[0-9]+$/;
+    return re.test(value);
+  }
+  
+  export function numericCheck(value) {
+    return value && !isNumericOnly(value.trim()) ? null: 'Invalid input, Cannot be numeric' ;
+  }
+  

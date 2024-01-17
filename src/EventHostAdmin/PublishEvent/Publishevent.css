@@ -3,6 +3,7 @@
     height: 100vh;
     width: 100%;
     flex-direction: column;
+    background-size: cover;
   
 }
 
@@ -121,6 +122,9 @@
     bottom: 0;
 }
 
+/* .event-not-approved{
+
+} */
 .button-custom-style{
     background-color:#345C8B;
 }
@@ -131,16 +135,33 @@
     justify-content: center;
 }
 
-.status-text{
+.pulish-event-text-style{
    
-    font-size: 14px !important;
-    color: red;
+    font-size: 20px !important;
+    color: rgb(255, 253, 253) !important;
+}
+
+.button-custom-delete-style{
+    background-color :red !important;
+    margin-left: 10px !important;
+    
 }
 
 
-@media only screen and(max-width:800px){
+
+/* @media only screen and (max-width:800px){
     .status-text{
         padding-top: 10px !important;
     }
    
-}
+} */
+
+@media screen and (max-width: 767px) {
+    .container-custom-outer {
+      /* Adjust background size for smaller screens */
+      background-size: contain;
+    }
+    .button-view-style-class{
+        flex-direction: column;
+    }
+  }

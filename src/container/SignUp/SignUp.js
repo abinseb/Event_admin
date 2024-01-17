@@ -5,7 +5,7 @@ import Typography from '../../components/LandingNew/components/Typography';
 import AppFooter from '../../components/LandingNew/views/AppFooter';
 import AppAppBar from '../../components/LandingNew/views/AppAppBar';
 import AppForm from '../../components/LandingNew/views/AppForm';
-import { required } from '../../components/LandingNew/form/validation';
+import {email, required,mobile ,numericCheck } from '../../components/LandingNew/form/validation';
 import { Field, Form, FormSpy } from 'react-final-form';
 import RFTextField from '../../components/LandingNew/form/RFTextField';
 import FormButton from '../../components/LandingNew/form/FormButton';
@@ -32,17 +32,35 @@ function SignUp() {
       errors.confirmpassword = 'Password Mismatch';
     }
 
-    if (!values.email) {
-      errors.email = 'Required';
+    // validating email
+    if (!errors.email) {
+      const emailError = email(values.email);
+      if (emailError) {
+        errors.email = emailError;
+      }
     }
 
-    // Add other validation rules as needed
+    // validating mobile
+    if (!errors.mobile) {
+      const mobileError = mobile(values.mobile);
+      if (mobileError) {
+        errors.mobile = mobileError;
+      }
+    }
+
+    if (!errors.organization) {
+      const nameError = numericCheck(values.organization);
+      if (nameError) {
+        errors.organization = nameError;
+      }
+    }
+   
 
     return errors;
   };
 
   const handleSubmit = async (values) => {
-    try {
+    // try {
       const userData = {
         organization:values.organization,
         email:values.email,
@@ -52,24 +70,24 @@ function SignUp() {
      console.log(userData);
      const signupresponse = await HostSignUp(userData);
      
-      console.log("registration success",signupresponse)
+      console.log("registration success",signupresponse.response)
       if(signupresponse === 201){
         setNotification(ToastMessageDisplay('success','SignUp Success'))
          
           navigate('/signinhere');
       }
       else{
-          setNotification(ToastMessageDisplay('error','Sign Up Failed'))
+          setNotification(ToastMessageDisplay('error',signupresponse.response.data.error))
         //  alert("Error");
       }
      
       setSent(false);
       // navigate('/signuphere')
 
-    } catch (error) {
-      console.error('API request failed:', error.message);
-      setNotification(ToastMessageDisplay('error','Sign Up Failed'))
-    }
+    // } catch (error) {
+    //   console.error('API request failed:', error.message);
+    //   setNotification(ToastMessageDisplay('error','Sign Up Failed'))
+    // }
   };
 
   const ToastMessageDisplay=(type,message)=>{
@@ -107,6 +125,7 @@ function SignUp() {
                 label="Organization Name"
                 margin="normal"
                 name="organization"
+                
                 required
               />
 
@@ -133,7 +152,7 @@ function SignUp() {
               />
 
               <Field
-                autoComplete="new-password"
+                // autoComplete="new-password"
                 component={RFTextField}
                 disabled={submitting || sent}
                 fullWidth

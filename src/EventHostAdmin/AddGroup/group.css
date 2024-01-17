@@ -7,12 +7,23 @@
     padding-top: 100px;
 }
 
-.group-button-view-container{
+/* .group-button-view-container{
     /* align-self:flex-start; */
-    padding-right: 650px;
-}
+    /* padding-right: 650px;*/
+/* //}  */
 
 .center-table{
     padding-top: 20px;
     width: 40%; 
 }
+
+/* @media only screen and (max-width:'800px'){
+    .center-table{
+        width: 70%;
+        
+    }
+
+    .group-button-view-container{
+        padding-right: 200px;
+    }
+} */

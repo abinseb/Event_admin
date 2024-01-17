@@ -50,6 +50,9 @@
   .event-partic-details-view{
     width: 10cm;
   }
+  .event-participant-container{
+    background-size: contain;
+  }
 }
 /* CSS */
 .button-19 {

@@ -104,6 +104,7 @@ const Notification=(type,msg)=>{
         <DateAndTimePicker
             onDateTimeChange={handleTimeAndDate}
             name={'startdate_time'}
+            date={eventList.start_date_time}
         />
       </div>
 
@@ -112,6 +113,7 @@ const Notification=(type,msg)=>{
             <DateAndTimePicker
                 onDateTimeChange={handleTimeAndDate}
                 name={'enddate_time'}
+                date={eventList.end_date_time}
             />
       </div>
 

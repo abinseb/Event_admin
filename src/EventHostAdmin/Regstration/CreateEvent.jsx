@@ -7,6 +7,9 @@ import { isValidateDateGraiterThanCurrent } from '../../Validations/Validation';
 import AppBarNew from '../../components/Appbar/AppBarNew';
 import { useNavigate } from 'react-router-dom';
 import DateAndTimePicker from '../../components/DateTimePicker/Date&Time';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const CreateEvent = () => {
 
   const navigate = useNavigate();
@@ -40,9 +43,14 @@ const [validationErrors, setValidationErrors] = useState({
   eventvenue:false,
   eventimage:false,
 });
-// Toast notifications
-const [notificationView,setNotificationView] = useState(null);
 
+const [isValidInput,setIsvalidInput] = useState({
+  eventname: false,
+  eventdescription:false,
+  eventvenue:false,
+});
+
+// add workshop , store the workshop details in the 'workshops' array
   const handleAddWorkshop = () => {
     setWorkshops([...workshops, workshopDetails]);
     setWorkshopDetails({  workshopname:'',
@@ -62,57 +70,65 @@ const handle_removeWorkshops=(index)=>{
   setWorkshops(updatedWorkshops);
 }
 
+// ochange function of the text field is perform
 const handleEventDetailsChange=(e)=>{
   const {name ,value} = e.target;
 
   const isNumericOnly = /^[0-9]+$/;
-  const isValidInput = name === 'eventname' ? !isNumericOnly.test(value) : true;
+  
+  const isValidInput = !isNumericOnly.test(value);
+  // setIsvalidInput(name === 'eventname' ? !isNumericOnly.test(value) : true);
+  setIsvalidInput((prevIsValidInput) => ({
+    ...prevIsValidInput,
+    [name]: isValidInput,
+  }));
 
+  // check field is empty or not
   setValidationErrors((prevErrors) => ({
     ...prevErrors,
     [name]: value.trim() === '', // Set to true if the field is empty
   }));
 
   setEventDetails({ ...eventDetails, [name]: value });
-  // setEventDetails({...eventDetails,[e.target.name]:e.target.value});
+  
 }
 
-// const handleEventFileChange=(e)=>{
-//   // const file = e.target.files[0];
-//   const data = new FileReader();
-//   data.addEventListener('load',()=>{
-//     const base64icon = data.result;
-//     setEventDetails({...eventDetails,eventimage:base64icon});
-//   })
-//   data.readAsDataURL(e.target.files[0])
-//   //  setEventDetails({...eventDetails,eventimage:imag});
-// }
+// check any of thr validation is  failed
+const validateForm = () => {
+  // Check if any validation fails
+  const isFormValid = Object.values(isValidInput).every((isValid) => isValid === true);
+  const hasErrors = Object.values(validationErrors).some((error) => error === true);
+  console.log("validateresult",isFormValid && !hasErrors);
+
+  return isFormValid && !hasErrors;
+};
 
 console.log(imag);
 
+// register event to the db
 const handle_EventRegistration=async()=>{
-      try{
+      // check any filed is empty
         if (
           Object.values(eventDetails).some((value) => typeof value === 'string' && value.trim() === '')
         ) {
-          setNotificationView(ToasNotification('error', 'All fields must be filled out.'));
+          // setNotificationView(ToasNotification('error', 'All fields must be filled out.'));
+          toast.error('All fields must be filled out.');
           return;
         }
-
-        // if(!isValidateDateGraiterThanCurrent(eventDetails.startdate_time)){
-        //   setNotificationView(ToasNotification('error', 'Invalid Date'));
-        //   return;
-        // }
+// check is there any validation fail
+        if(validateForm()){
         const registrationData ={
           eventDetails:{...eventDetails},
           workshops:[...workshops],
         };
         console.log("Dataa",registrationData);
+        // sent data to the registration api
       const RegistrationResponse = await Event_registration_Function(registrationData);
-        console.log("RegistrationData",RegistrationResponse);
+        console.log("RegistrationDataResponse",RegistrationResponse);
+        if(RegistrationResponse.data){
         if(RegistrationResponse.data.success === true){
           // alert("Event Created Successfully");
-          setNotificationView(ToasNotification('success','Event Registration Success'));
+          toast.success('Event Registered.');
           
           setEventDetails({
             eventname:'',
@@ -124,19 +140,23 @@ const handle_EventRegistration=async()=>{
 
           navigate('/eventlist');
         }
-        // else{
-        //   setNotificationView(ToasNotification('error','Error'))
-        // }
       }
-      catch(error){
-        console.log("Error in eventregistration", error);
-        setNotificationView(ToasNotification('error','Error'))
-      }
+      else {
+        // const errorMessage = RegistrationResponse.response.data.message;
+          toast.error(RegistrationResponse.response.data.message);
+          
+        }
+    }   
+}
+// workshop start and end data value handling
+const handleWorkshopDateandTimeHandler=(newdate,namevalue)=>{
+  console.log("workshop date",newdate);
+const Date =  newdate["$d"].toISOString();
+console.log("FetchedWorkshopDate",Date,namevalue);
+setWorkshopDetails({ ...workshopDetails, [namevalue]: Date });
 }
 
-const ToasNotification=(type,message)=>{
-  return <ToastMessage type={type} message={message}/>
-}
+// time&date data handler of event start and end date
 const handleTimeDateChange=(newdate,namevalue)=>{
       console.log("new date",newdate);
     const Date =  newdate["$d"].toISOString();
@@ -144,11 +164,14 @@ const handleTimeDateChange=(newdate,namevalue)=>{
     setEventDetails({ ...eventDetails, [namevalue]: Date });
 }
 
+const cancelRegistration=()=>{
+  navigate('/eventlist');
+}
   return (
     <>
    <AppBarNew/>
     <div className='registration-container'>
-      {notificationView}
+
       <div style={{width:'70%'}}>  
       <Typography variant='h5' className='tittle-custom-style'>Event Registration</Typography>  
     <Grid container spacing={1} className='grid-form-container'>
@@ -165,7 +188,7 @@ const handleTimeDateChange=(newdate,namevalue)=>{
               value={eventDetails.eventname}
               onChange={handleEventDetailsChange}
               error={validationErrors.eventname} // Set error prop based on validation status
-              helperText={validationErrors.eventname && 'Required'} // Display error message
+              helperText={validationErrors.eventname ? 'Event Name cannot be empty' : (validationErrors.eventname === false && !isValidInput.eventname ? <span style={{ color: 'red' }}>Event Name cannot be numeric</span> : '')} // Display error message
             />
           </div>
         </Grid>
@@ -184,14 +207,14 @@ const handleTimeDateChange=(newdate,namevalue)=>{
               value={eventDetails.eventdescription}
               onChange={handleEventDetailsChange}
               error={validationErrors.eventdescription} // Set error prop based on validation status
-              helperText={validationErrors.eventdescription && 'Required'} 
+              helperText={validationErrors.eventdescription ? 'Description cannot be empty' :(validationErrors.eventdescription === false && !isValidInput.eventdescription ? <span style={{ color: 'red' }}>Description cannot be numeric</span> : '')} 
 
             />
           </div>
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <div className='label-textbox-container'>
+          <div className='label-textbox-container width-style' >
             <label className='label-custom'>Starting Date & Time</label>
             <DateAndTimePicker
               onDateTimeChange={handleTimeDateChange}
@@ -200,7 +223,7 @@ const handleTimeDateChange=(newdate,namevalue)=>{
           </div>
         </Grid>
         <Grid item xs={12} md={6}>
-          <div className='label-textbox-container'>
+          <div className='label-textbox-container width-style'>
             <label className='label-custom'>Ending Date & Time</label>
             <DateAndTimePicker
               onDateTimeChange={handleTimeDateChange}
@@ -222,7 +245,7 @@ const handleTimeDateChange=(newdate,namevalue)=>{
               value={eventDetails.eventvenue}
               onChange={handleEventDetailsChange}
               error={validationErrors.eventvenue} // Set error prop based on validation status
-              helperText={validationErrors.eventvenue && 'Required'} 
+              helperText={validationErrors.eventvenue ? 'Venue cannot be empty' :(validationErrors.eventdescription === false && !isValidInput.eventvenue ? <span style={{ color: 'red' }}>Venue cannot be numeric</span> : '')} 
             />
           </div>
         </Grid>
@@ -270,6 +293,7 @@ const handleTimeDateChange=(newdate,namevalue)=>{
         <DialogTitle>Add Workshop</DialogTitle>
         <DialogContent>
           <div style={{margin:'2%', width:'70%',alignSelf:'center'}}>
+          <label>Workshop Name</label>
           <TextField
             style={{marginBottom:'5%'}}
             label="Workshop Name"
@@ -278,6 +302,7 @@ const handleTimeDateChange=(newdate,namevalue)=>{
             value={workshopDetails.workshopname}
             onChange={(e) => setWorkshopDetails({ ...workshopDetails, workshopname: e.target.value })}
           />
+            <label>Description</label>
           <TextField
              style={{marginBottom:'5%'}}
             label="Description"
@@ -286,6 +311,7 @@ const handleTimeDateChange=(newdate,namevalue)=>{
             value={workshopDetails.workshopdescription}
             onChange={(e) => setWorkshopDetails({ ...workshopDetails, workshopdescription: e.target.value })}
           />
+          <label>Venue</label>
           <TextField
            style={{marginBottom:'5%'}}
             label="Venue"
@@ -294,6 +320,7 @@ const handleTimeDateChange=(newdate,namevalue)=>{
             value={workshopDetails.workshopvenue}
             onChange={(e) => setWorkshopDetails({ ...workshopDetails, workshopvenue: e.target.value })}
           />
+           <label>Maximum Participants</label>
           <TextField
            style={{marginBottom:'5%'}}
             label="Maximum participants"
@@ -302,14 +329,17 @@ const handleTimeDateChange=(newdate,namevalue)=>{
             value={workshopDetails.maximumparticipants}
             onChange={(e) => setWorkshopDetails({ ...workshopDetails, maximumparticipants: e.target.value })}
           />
-          <TextField
-           style={{marginBottom:'5%'}}
-           label='Date'
-          variant='outlined'
-          value={workshopDetails.workshopdate}
-          fullWidth
-          type='date'
-          onChange={(e)=> setWorkshopDetails({ ...workshopDetails,workshopdate:e.target.value})}
+          <label>Start Date</label>
+        
+          <DateAndTimePicker
+            name='startdate'
+            onDateTimeChange={handleWorkshopDateandTimeHandler}
+          />
+           <label>Start Date</label>
+         
+          <DateAndTimePicker
+            name='enddate'
+            onDateTimeChange={handleWorkshopDateandTimeHandler}
           />
           <label>Upload Icon</label>
           <TextField
@@ -357,7 +387,8 @@ const handleTimeDateChange=(newdate,namevalue)=>{
               <h6>{workshop.workshopname}</h6>
               <ul>
                 <li style={{fontSize:'10px'}}>{`Description: ${workshop.workshopdescription}`}</li>
-                <li style={{fontSize:'10px'}}>{`Date: ${workshop.workshopdate}`}</li>
+                <li style={{fontSize:'10px'}}>{`Start Date&Time: ${workshop.startdate}`}</li>
+                <li style={{fontSize:'10px'}}>{`End Date&Time: ${workshop.enddate}`}</li>
                 <li style={{fontSize:'10px'}}>{`Venue: ${workshop.workshopvenue}`}</li>
                 <li style={{fontSize:'10px'}}>{`MaximumParticipants: ${workshop.maximumparticipants}`}</li>
                 {/* <li style={{fontSize:'10px'}}>{`Icon: ${workshop.workshopicon}`}</li> */}
@@ -375,10 +406,23 @@ const handleTimeDateChange=(newdate,namevalue)=>{
     </div>
     </div>
     <div className='bottom-button-container'>
-        <Button variant='contained' onClick={handle_EventRegistration}>Register</Button>
+        <Button className='padding-between-buttons' variant='contained' onClick={handle_EventRegistration}>Register</Button>
+        <Button className='padding-between-buttons' style={{backgroundColor:'red'}} variant='contained' onClick={cancelRegistration}>Cancel</Button>
     </div>
     
     </div>
+    <ToastContainer
+        position='top-right'
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='light'
+      />
     </>
   );
 }

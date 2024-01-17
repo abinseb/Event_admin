@@ -16,3 +16,20 @@ export const Delete_Workshop=async(workshopid)=>{
     }
 
 }
+
+export const DeleteEventFromDB=async(eventid)=>{
+    console.log("eventid delete",eventid)
+    try{
+        const eventdelete = await axios.post(`${url}/host/event/`,{
+          
+                "id" :eventid
+         
+        })
+        console.log("Delete",eventdelete);
+        return await eventdelete;
+    }
+    catch(error){
+        console.error(error);
+        return error
+    }
+}

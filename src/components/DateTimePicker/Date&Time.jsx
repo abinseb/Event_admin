@@ -5,8 +5,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-export default function DateAndTimePicker({ onDateTimeChange ,name }) {
-  const [value, setValue] = React.useState(dayjs('2022-04-17T15:30'));
+export default function DateAndTimePicker({ onDateTimeChange ,name ,date}) {
+  const [value, setValue] = React.useState(dayjs(date));
 
   const handleDateTimeChange = (newValue) => {
     setValue(newValue);
@@ -17,7 +17,7 @@ export default function DateAndTimePicker({ onDateTimeChange ,name }) {
     <LocalizationProvider dateAdapter={AdapterDayjs} style={{with:'100%'}}>
       <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
         <DateTimePicker
-          label="Controlled picker"
+          label="Date & Time"
           name={name}
           value={value}
           onChange={handleDateTimeChange}

@@ -17,14 +17,20 @@ import { Co2Sharp } from '@mui/icons-material';
 import { Host_Login } from '../../API /Login_USERS';
 import { URL_Fetch } from '../../API /URL_Fetch';
 import axios from 'axios';
-function SignInNew() {
+import ToastMessage from '../../components/ToastNotifications/ToastMessage';
+
+
+
+
+function SignInNew({onLogin}) {
   const url = URL_Fetch();
   const [sent, setSent] = React.useState(false);
-
+  const [notification , setNotification] = React.useState('');
   const navigate = useNavigate();
 
   const validate = (values) => {
     const errors = required(['email', 'password'], values);
+  
 
     if (!errors.email) {
       const emailError = email(values.email);
@@ -39,24 +45,7 @@ function SignInNew() {
   const handleSubmit = async(values) => {
     setSent(true);
     console.log(values.email,"password",values.password)
-    // try{
-    // const loginResponse =await Host_Login(values.email,values.password);
-    // await console.log("LOginResponse",loginResponse);
-    // if(loginResponse.status === 200){
-    //   const loginData =await loginResponse.data;
-    //   await sessionStorage.setItem("token",loginData.token);
-    //   await navigate('/drawer');
-    // }
-    // else if(loginResponse === undefined){
-    //   alert('Invalid Credentials');
-    //   setSent(false);
-    // }
-    // else{
-    //   alert("Try after sometime");
-    // }
-      // console.log("success");
-     
-     //navigate('/drawer')
+   
      try{
       const loginHost = await axios.post(`${url}/auth/login`,{
           
@@ -73,16 +62,28 @@ function SignInNew() {
       }
       else{
         alert("Invalid Credentials")
+       
         setSent(false);
       }
 
   }
   catch(error){
-      alert("Inavalid");
+     
       setSent(false);
+      console.log("Error",error);
+      setNotification(notificationDisplay('error',error.response.data.message));
   }
 
   };
+
+  const notificationDisplay=(type,msg)=>{
+    return(
+      <ToastMessage
+      type={type}
+      message={msg}
+      />
+    )
+  }
 
   return (
     <React.Fragment>
@@ -165,6 +166,7 @@ function SignInNew() {
         </Typography>
       </AppForm>
       <AppFooter />
+      {notification}
     </React.Fragment>
   );
 }

@@ -36,7 +36,7 @@ export const Event_registration_Function=async(eventData)=>{
     }
     catch(error){
         console.error("Error in registration" , error);
-       return false;
+       return error;
     }
 }
 
@@ -61,6 +61,7 @@ export const  HostSignUp=async(userdata)=>{
     }
     catch(error){
         console.error("Error in signup", error);
+        return error;
     }
 }
 
@@ -85,5 +86,23 @@ export const AddWorkshopDetails=async(workshop)=>{
     }
     catch(error){
 
+    }
+}
+
+export const group_Add=async(groupdata)=>{
+    console.log("groupaddeventid",eventid);
+    try{
+        const group = await axios.post(`${url}/host/group/add`,{
+            "name" : groupdata ,
+            "event" : eventid
+        })
+
+        console.log("groupdata",group);
+        return await group
+
+    }
+    catch(error){
+        console.error("Error",error);
+        return await error;
     }
 }

@@ -18,9 +18,9 @@ export default function TableList({ groupData }) {
         </TableHead>
         <TableBody>
           {groupData.map((dataItem) => (
-            <TableRow key={dataItem.id}>
+            <TableRow key={dataItem._id}>
               <TableCell align="center" component="th" scope="row">
-                {dataItem.value}
+                {dataItem.name}
               </TableCell>
             </TableRow>
           ))}

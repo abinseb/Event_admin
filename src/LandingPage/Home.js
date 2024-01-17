@@ -15,9 +15,9 @@ const Home = () => {
         <EventTopScreen/>
         <EventTypeDetails/>
         <EventMemmoriesAlbum/>
-        {/* <ProductHowItWorks/> */}
-        {/* <ProductCTA/> */}
-        {/* <ProductSmokingHero/> */}
+        {/* <ProductHowItWorks/>
+        <ProductCTA/>
+        <ProductSmokingHero/> */}
         <AppFooter/>
     </React.Fragment>
   )

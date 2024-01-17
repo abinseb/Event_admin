@@ -12,12 +12,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import AddIcon from '@mui/icons-material/Add';
 
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Dashboard from "../../EventHostAdmin/Dashboard/Dashboard";
-import CreateEvent from "../../EventHostAdmin/Regstration/CreateEvent";
-import EventRegistration from "../../EventHostAdmin/Regstration/EventRegistration";
+
 import {
   Route,
   Router,
@@ -37,6 +37,7 @@ import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import WorkshopView from "../../EventHostAdmin/Workshop/WorkshopView";
 import EventEdit from "../../EventHostAdmin/EventEdit/EventEdit";
 import EditIcon from '@mui/icons-material/Edit';
+import AddGroup from "../../EventHostAdmin/AddGroup/AddGroup";
 const drawerWidth = 240;
 
 export default function PermanentDrawerLeft() {
@@ -63,6 +64,9 @@ export default function PermanentDrawerLeft() {
       case "workshop":
         setPage(<WorkshopView />);
         break;
+      case "group":
+        setPage(<AddGroup/>);
+        break;
       default:
         setPage(<Dashboard />);
     }
@@ -75,6 +79,7 @@ export default function PermanentDrawerLeft() {
 
   const handleNavigationToScreen = (pageName) => {
     nav(`/drawer?page=${pageName}`);
+    window.location.reload(true);
   };
 
   const handleLogOut = async() => {
@@ -195,6 +200,18 @@ export default function PermanentDrawerLeft() {
                   <EditIcon />
                 </ListItemIcon>
                 <ListItemText primary="Edit Event" />
+            </ListItemButton>
+
+            <ListItemButton
+                disablePadding
+                onClick={() => {
+                  handleNavigationToScreen("group");
+                }}
+              >
+                <ListItemIcon>
+                  <AddIcon />
+                </ListItemIcon>
+                <ListItemText primary="AddGroup" />
             </ListItemButton>
 
            

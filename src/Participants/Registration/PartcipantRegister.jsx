@@ -120,7 +120,7 @@ const RegistrationParticipate=async()=>{
     console.log("Reg Response",participantReg.data);
     alert(participantReg.data.data);
     setShowNotification(nofificationAlertReg('success',participantReg.data.data))
-    navigate('/participanthome')
+    navigate(`/participanthome/${eventId}`)
   }
   catch(error){
     console.log(error.response.data.errors[0].path );

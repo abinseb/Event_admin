@@ -39,3 +39,17 @@ export const eventDataFetch_Single=async()=>{
         console.error(error);
     }
 }
+
+export const groupDataFetch=async()=>{
+    try{
+        const groupdata = await axios.get(`${url}/host/group/${eventid}`)
+        console.log("Eventgroup",groupdata);
+        return await groupdata;
+
+    }
+    catch(error){
+        console.error("Error",error);
+        return await error;
+    }
+
+}

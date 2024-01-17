@@ -18,15 +18,17 @@ const Card_Update = ({ workshopname, date, venue, maxparticipants, onEditClick, 
           <Typography className='title-class'>{workshopname}</Typography>
           <Typography className='sub-details-text'>Date : {date}</Typography>
           <Typography className='sub-details-text'>Venue : {venue}</Typography>
-          <Typography className='sub-details-text'>Maximum Participants : {maxparticipants}</Typography>
+          <Typography className='sub-details-text'>Max Participants : {maxparticipants}</Typography>
         </CardContent>
         <IconButton
           aria-label="close"
+          className='workshop_delete_icon'
           style={{
             color: 'red',
             height: '15px',
             width: '15px',
-            marginLeft: '40px',
+            // marginLeft: '70px',
+            marginTop:'10px'
           }}
           onClick={onDeleteClicked}
         >

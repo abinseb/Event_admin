@@ -63,6 +63,7 @@ export default function AppFooter() {
           width: '100%', // Make the image fill the entire box
           height: '100%', // Make the image fill the entire box
         },
+        marginRight:'3%'
       }}
     >
       <img

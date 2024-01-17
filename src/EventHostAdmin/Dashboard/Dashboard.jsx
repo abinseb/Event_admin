@@ -40,7 +40,7 @@ const Dashboard = () => {
     };
 
     fetchData();
-  }, []);
+  }, [workshopVerified]);
 
   return (
     

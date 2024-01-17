@@ -3,7 +3,7 @@ import ReportIcon from '@mui/icons-material/Report';
 import './Error404.css';
 import { Typography } from '@mui/material';
 import AppAppBar from '../../components/LandingNew/views/AppAppBar';
-const ErrorHandling = () => {
+const ErrorHandling = ({titlemessage,message}) => {
   return (
     <>
     <AppAppBar></AppAppBar>

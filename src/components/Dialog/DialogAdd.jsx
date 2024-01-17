@@ -17,17 +17,22 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
+   // Add the following styles to set fixed width
+  //  '& .MuiDialog-paper': {
+  //   maxWidth: '2000px', // Set your desired width
+  // },
 }));
 
-export default function DialogWithTextField({ open, handleClose, groupName, handleSaveChanges }) {
+export default function DialogWithTextField({handleOperation, opendialog, handleClose, groupName, handleSaveChanges }) {
   return (
     <BootstrapDialog
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
-      open={open}
+      open={opendialog}
+    
     >
       <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-        Modal title
+       Add Group
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -41,15 +46,16 @@ export default function DialogWithTextField({ open, handleClose, groupName, hand
       >
         <CloseIcon />
       </IconButton>
-      <DialogContent dividers>
+      <DialogContent dividers style={{width:'600px'}}>
         <TextField
+         style={{width:'100%'}}
           label="Group Name"
           value={groupName}
           onChange={(e) => handleSaveChanges(e.target.value)}
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose}>
+        <Button autoFocus onClick={handleOperation}>
           Save changes
         </Button>
       </DialogActions>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 .card-container{
     width: 100%;
     display: flex;
@@ -17,13 +19,24 @@
     font-weight: 900 !important;
     top: 0;
     position: relative;
+    font-family:'Space Mono', monospace;
 }
 
 .Details-container{
-    width: 55% !important;
+    width: 65%;
 }
+
+/* delete icon */
+/* .workshop_delete_icon{
+    color: 'red';
+    height:15px ;
+    width:15px ;
+    margin-left:70px ;
+    margin-top:10px ;
+} */
 .sub-details-text{
     font-size: 90% !important;
+    font-family:'Space Mono', monospace;
 }
 
 .card-bottom-action{
@@ -48,6 +61,9 @@
 
         width: 100%;
         
+    }
+    .Details-container{
+        width: 60%;
     }
 }
 

@@ -10,7 +10,7 @@ const DropdownList = ({datalist,label,name,handleChange}) => {
   }
   return (
     <FormControl fullWidth sx={{ mb: 3 }}>
-      <InputLabel id="district-label">District</InputLabel>
+      <InputLabel id="district-label">Group</InputLabel>
 
       <Select
         labelId="group-label"
